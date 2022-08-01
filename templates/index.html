@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>About</h1>
+    <p>My name is Aleksey Kuznetsov. I'm an iOS Engineer. This is my space
+    where I intend to write about programming, tech and life in general.</p>
+    <h1>Latest Posts</h1>
+    {% set_global years_sections = [] %}
+    {% set section = get_section(path="blog/_index.md") %}
+    {% for year_section_path in section.subsections %}
+        {% set_global years_sections = years_sections | concat(with=get_section(path=year_section_path)) %}
+    {% endfor %}
+    {% for year_section in years_sections | sort(attribute="title") | reverse %}
+        {% for page in year_section.pages %}
+        <p>{{ page.date }} | <a href="{{ page.permalink | safe }}">{{ page.title }}</a></p>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

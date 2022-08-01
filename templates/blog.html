@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title"> {{ section.title }} </h1>
+    {% set_global years_sections = [] %}
+    {% for year_section_path in section.subsections %}
+        {% set_global years_sections = years_sections | concat(with=get_section(path=year_section_path)) %}
+    {% endfor %}
+    {% for year_section in years_sections | sort(attribute="title") | reverse %}
+        <h2>{{ year_section.title }}</h2>
+        <ul>
+        {% for page in year_section.pages %}
+        <li><code>{{ page.date }}</code> <a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

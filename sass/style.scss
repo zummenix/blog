@@ -1,0 +1,99 @@
+$foreground-dark: #adbac7;
+$background-dark: #22272e;
+$secondary-dark: #999999;
+$tertiary-dark: rgba(99,110,123,0.4);
+$accent-dark: #539bf5;
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14pt;
+
+    line-height: 1.3em;
+
+    padding: 5em 25%;
+
+    color: $foreground-dark;
+    background-color: $background-dark;
+
+    .secondary {
+        color: $secondary-dark;
+    }
+
+    a, a:link, a:visited {
+        color: $accent-dark;
+    }
+
+    a:hover {
+        color: lighten($accent-dark, 10%);
+    }
+
+    blockquote {
+        border-left: 2px solid $secondary-dark;
+    }
+
+    code {
+        background-color: $tertiary-dark;
+        font-size: 85%;
+        border-radius: 6px;
+    }
+
+    pre code {
+        background-color: transparent;
+    }
+
+    .footnote-definition sup {
+        color: $secondary-dark;
+    }
+}
+
+code {
+    padding: 0.2em 0.3em;
+    font-size: 12pt;
+}
+
+pre {
+    overflow: auto;
+    padding: 0.3em;
+
+    code {
+        padding: 0;
+    }
+}
+
+img {
+    max-width: 100%;
+}
+
+hr {
+    border-color: $tertiary-dark
+}
+
+blockquote {
+    margin-left: 0;
+    padding-left: 1em;
+}
+
+.footnote-definition {
+    margin-top: 1em;
+
+    p {
+        display: inline;
+    }
+}
+
+@media all and (max-width: 1200px) {
+    body {
+        padding: 3em 15%;
+    }
+}
+
+@media all and (max-width: 800px) {
+    body {
+        padding: 1em 1em;
+    }
+}
