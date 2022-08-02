@@ -6,7 +6,7 @@
     where I intend to write about programming, tech and life in general.</p>
     <h1>Latest Posts</h1>
     {% set_global years_sections = [] %}
-    {% set section = get_section(path="blog/_index.md") %}
+    {% set section = get_section(path="posts/_index.md") %}
     {% for year_section_path in section.subsections %}
         {% set_global years_sections = years_sections | concat(with=get_section(path=year_section_path)) %}
     {% endfor %}
