@@ -12,7 +12,7 @@
     {% endfor %}
     {% for year_section in years_sections | sort(attribute="title") | reverse %}
         {% for page in year_section.pages %}
-        <p>{{ page.date }} | <a href="{{ page.permalink | safe }}">{{ page.title }}</a></p>
+            <p>{{ page.date }} | <a href="{{ page.permalink | safe }}">{{ page.title }}</a></p>
         {% endfor %}
     {% endfor %}
 {% endblock %}

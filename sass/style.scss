@@ -1,6 +1,5 @@
 $foreground-dark: #adbac7;
 $background-dark: #22272e;
-$secondary-dark: #999999;
 $tertiary-dark: rgba(99,110,123,0.4);
 $accent-dark: #539bf5;
 
@@ -20,10 +19,6 @@ body {
     color: $foreground-dark;
     background-color: $background-dark;
 
-    .secondary {
-        color: $secondary-dark;
-    }
-
     a, a:link, a:visited {
         color: $accent-dark;
     }
@@ -33,7 +28,7 @@ body {
     }
 
     blockquote {
-        border-left: 2px solid $secondary-dark;
+        border-left: 2px solid $tertiary-dark;
     }
 
     code {
@@ -47,7 +42,7 @@ body {
     }
 
     .footnote-definition sup {
-        color: $secondary-dark;
+        color: $tertiary-dark;
     }
 }
 
@@ -75,7 +70,12 @@ hr {
 
 blockquote {
     margin-left: 0;
-    padding-left: 1em;
+    margin-right: 0;
+    padding: 0.05em 1em;
+
+    background-color: lighten($background-dark, 1%);
+    font-size: 95%;
+    font-style: italic;
 }
 
 .footnote-definition {
