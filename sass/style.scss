@@ -27,6 +27,11 @@ body {
         color: lighten($accent-dark, 10%);
     }
 
+    h1, h2, h3, h4 {
+        padding-top: 1em;
+        padding-bottom: 0.3em;
+    }
+
     blockquote {
         border-left: 2px solid $tertiary-dark;
     }
@@ -76,6 +81,11 @@ blockquote {
     background-color: lighten($background-dark, 1%);
     font-size: 95%;
     font-style: italic;
+}
+
+.date {
+    color: darken($foreground-dark, 15%);
+    font-size: 90%;
 }
 
 .footnote-definition {

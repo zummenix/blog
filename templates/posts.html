@@ -8,10 +8,8 @@
     {% endfor %}
     {% for year_section in years_sections | sort(attribute="title") | reverse %}
         <h2>{{ year_section.title }}</h2>
-        <ul>
         {% for page in year_section.pages %}
-        <li><code>{{ page.date }}</code> <a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+        <p>{{ page.date }} – <a href="{{ page.permalink | safe }}">{{ page.title }}</a></p>
         {% endfor %}
-        </ul>
     {% endfor %}
 {% endblock %}
