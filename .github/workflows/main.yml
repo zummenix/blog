@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3.0.0
+      - name: Build only and check links
+        uses: shalzz/zola-deploy-action@v0.16.0
+        env:
+          BUILD_ONLY: true
+          CHECK_LINKS: true
+          BUILD_FLAGS: --drafts
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3.0.0
+      - name: Build and deploy
+        uses: shalzz/zola-deploy-action@v0.16.0
+        env:
+          REPOSITORY: https://github.com/zummenix/zummenix.github.io
+          PAGES_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
