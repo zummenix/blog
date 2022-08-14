@@ -4,6 +4,11 @@
     <h1>About</h1>
     <p>My name is Aleksey Kuznetsov. I'm an iOS Engineer. This is my space
     where I intend to write about programming, tech and life in general.</p>
+    <p>
+    {% for social in config.extra.socials %}
+        <a href="{{ social.link | safe }}">{{ social.title }}</a>{% if not loop.last %} | {% endif %}
+    {% endfor %}
+    </p>
     <h1>Latest Posts</h1>
     {% set_global years_sections = [] %}
     {% set section = get_section(path="posts/_index.md") %}
