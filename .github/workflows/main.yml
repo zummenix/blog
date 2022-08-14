@@ -20,7 +20,7 @@ jobs:
           CHECK_LINKS: true
           BUILD_FLAGS: --drafts
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          
+
   build_and_deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -30,6 +30,6 @@ jobs:
       - name: Build and deploy
         uses: shalzz/zola-deploy-action@v0.16.0
         env:
-          REPOSITORY: https://github.com/zummenix/zummenix.github.io
+          REPOSITORY: zummenix/zummenix.github.io
           PAGES_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
