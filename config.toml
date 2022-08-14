@@ -1,4 +1,4 @@
-base_url = "https://example.com"
+base_url = "https://zummenix.github.io"
 
 compile_sass = true
 minify_html = true
