@@ -10,6 +10,7 @@
     {% endfor %}
     </p>
     <h1>Latest Posts</h1>
+    <p>{{ config.something }}</p>
     {% set_global years_sections = [] %}
     {% set section = get_section(path="posts/_index.md") %}
     {% for year_section_path in section.subsections %}
