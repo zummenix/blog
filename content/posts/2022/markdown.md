@@ -1,6 +1,7 @@
 +++
 title = "Making your own blog with Zola"
 date = 2022-07-31
+draft = true
 +++
 
 This post is just a markdown example. You don't need to read this. It's very
