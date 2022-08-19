@@ -1,6 +1,6 @@
 +++
 title = "All Posts"
 sort_by = "date"
-template = "posts.html"
+template = "all_posts.html"
 page_template = "post.html"
 +++
