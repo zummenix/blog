@@ -8,7 +8,7 @@
     where I intend to write about programming, tech and life in general.</p>
     <p>
     {% for social in config.extra.socials %}
-        <a href="{{ social.link | safe }}">{{ social.title }}</a>{% if not loop.last %} | {% endif %}
+        <a href="{{ social.link | safe }}"><img src="{{ social.icon | safe }}" alt="{{ social.title }}" style="width:48px;height:48px;"></img></a>
     {% endfor %}
     </p>
     <h1>Latest Posts</h1>
