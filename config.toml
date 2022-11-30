@@ -8,9 +8,9 @@ highlight_code = true
 
 [extra]
 socials = [
-    { title = "Mail", link = "mailto:zummenix@gmail.com" },
-    { title = "GitHub", link = "https://github.com/zummenix" },
-    { title = "LinkedIn", link = "https://www.linkedin.com/in/zummenix" },
-    { title = "Telegram", link = "https://t.me/zummenix" },
-    { title = "Instagram", link = "https://instagram.com/zummenix" }
+    { title = "Mail", link = "mailto:zummenix@gmail.com" , icon = "/socials/mail.svg" },
+    { title = "GitHub", link = "https://github.com/zummenix" , icon = "/socials/github.svg" },
+    { title = "Instagram", link = "https://instagram.com/zummenix" , icon = "/socials/instagram.svg" },
+    { title = "LinkedIn", link = "https://www.linkedin.com/in/zummenix" , icon = "/socials/linkedin.svg" },
+    { title = "Telegram", link = "https://t.me/zummenix" , icon = "/socials/tg.svg" }
 ]
