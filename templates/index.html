@@ -6,11 +6,15 @@
     <h1>About</h1>
     <p>My name is Aleksey Kuznetsov. I'm an iOS Engineer. This is my space
     where I intend to write about programming, tech and life in general.</p>
-    <p>
+    <div class="socials">
     {% for social in config.extra.socials %}
-        <a href="{{ social.link | safe }}"><img src="{{ social.icon | safe }}" alt="{{ social.title }}" style="width:48px;height:48px;"></img></a>
+        <div class="socialbox">
+            <a href="{{ social.link | safe }}">
+                <img src="{{ social.icon | safe }}" alt="{{ social.title }}" style="width:44px;height:44px;"></img>
+            </a>
+        </div>
     {% endfor %}
-    </p>
+    </div>
     <h1>Latest Posts</h1>
     {% set_global years_sections = [] %}
     {% set section = get_section(path="posts/_index.md") %}
