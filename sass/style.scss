@@ -1,127 +1,133 @@
 $foreground-dark: #adbac7;
 $background-dark: #22272e;
-$tertiary-dark: rgba(99,110,123,0.4);
+$tertiary-dark: rgba(99, 110, 123, 0.4);
 $accent-dark: #539bf5;
 
-html, body {
-    margin: 0;
-    padding: 0;
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14pt;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14pt;
 
+  padding: 5em 25%;
 
-    padding: 5em 25%;
+  color: $foreground-dark;
+  background-color: $background-dark;
 
-    color: $foreground-dark;
-    background-color: $background-dark;
+  a,
+  a:link,
+  a:visited {
+    color: $accent-dark;
+  }
 
-    a, a:link, a:visited {
-        color: $accent-dark;
-    }
+  a:hover {
+    color: lighten($accent-dark, 10%);
+  }
 
-    a:hover {
-        color: lighten($accent-dark, 10%);
-    }
+  h1,
+  h2,
+  h3,
+  h4 {
+    padding-top: 1em;
+    padding-bottom: 0.3em;
+  }
 
-    h1, h2, h3, h4 {
-        padding-top: 1em;
-        padding-bottom: 0.3em;
-    }
+  p {
+    line-height: 1.3em;
+  }
 
-    p {
-        line-height: 1.3em;
-    }
+  blockquote {
+    border-left: 2px solid $tertiary-dark;
+  }
 
-    blockquote {
-        border-left: 2px solid $tertiary-dark;
-    }
+  code {
+    background-color: $tertiary-dark;
+    font-size: 85%;
+    border-radius: 6px;
+  }
 
-    code {
-        background-color: $tertiary-dark;
-        font-size: 85%;
-        border-radius: 6px;
-    }
+  pre code {
+    background-color: transparent;
+  }
 
-    pre code {
-        background-color: transparent;
-    }
-
-    .footnote-definition sup {
-        color: $tertiary-dark;
-    }
+  .footnote-definition sup {
+    color: $tertiary-dark;
+  }
 }
 
 code {
-    padding: 0.2em 0.3em;
-    font-size: 12pt;
+  padding: 0.2em 0.3em;
+  font-size: 12pt;
 }
 
 pre {
-    overflow: auto;
-    padding: 0.3em;
+  overflow: auto;
+  padding: 0.3em;
 
-    code {
-        padding: 0;
-    }
+  code {
+    padding: 0;
+  }
 }
 
 img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 hr {
-    border-color: $tertiary-dark
+  border-color: $tertiary-dark
 }
 
 blockquote {
-    margin-left: 0;
-    margin-right: 0;
-    padding: 0.05em 1em;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0.05em 1em;
 
-    background-color: lighten($background-dark, 1%);
-    font-size: 95%;
-    font-style: italic;
+  background-color: lighten($background-dark, 1%);
+  font-size: 95%;
+  font-style: italic;
 }
 
 .socials {
-    display: grid;
-    width: 300px;
-    margin: auto;
-    padding-top: 40px;
-    padding-bottom: 10px;
+  display: grid;
+  width: 300px;
+  margin: auto;
+  padding-top: 40px;
+  padding-bottom: 10px;
 }
 
 .socialbox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    grid-row: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-row: 1;
 }
 
 .date {
-    color: darken($foreground-dark, 15%);
-    font-size: 90%;
+  color: darken($foreground-dark, 15%);
+  font-size: 80%;
+  font-style: italic;
 }
 
 .footnote-definition {
-    margin-top: 1em;
+  margin-top: 1em;
 
-    p {
-        display: inline;
-    }
+  p {
+    display: inline;
+  }
 }
 
 @media all and (max-width: 1200px) {
-    body {
-        padding: 3em 15%;
-    }
+  body {
+    padding: 3em 15%;
+  }
 }
 
 @media all and (max-width: 800px) {
-    body {
-        padding: 1em 1em;
-    }
+  body {
+    padding: 1em 1em;
+  }
 }
