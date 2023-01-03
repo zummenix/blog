@@ -1,7 +1,10 @@
+{% import "macros/tools.html" as macros %}
+
 {% extends "base.html" %}
 
 {% block content %}
-<h1> {{ page.title }} </h1>
-<p class="date">{{ page.date }}</p>
+{{ macros::navbar() }}
+<h1>{{ page.title }}</h1>
+<p class="date">Published on {{ page.date | date(format="%B %d, %Y") }}</p>
 {{ page.content | safe }}
 {% endblock %}
