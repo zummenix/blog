@@ -3,6 +3,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="title">Posts of {{ section.title }}</h1>
-    {{ macros::list_posts(pages=section.pages) }}
+{{ macros::navbar() }}
+<h1 class="title">Posts of {{ section.title }}</h1>
+{{ macros::list_posts(pages=section.pages) }}
 {% endblock %}

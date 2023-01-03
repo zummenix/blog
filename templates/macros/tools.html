@@ -1,5 +1,12 @@
 {% macro list_posts(pages) %}
-    {% for page in pages %}
-        <p>{{ page.date }} – <a href="{{ page.permalink | safe }}">{{ page.title }}</a></p>
-    {% endfor %}
+{% for page in pages %}
+<p>{{ page.date }} – <a href="{{ page.permalink | safe }}">{{ page.title }}</a></p>
+{% endfor %}
 {% endmacro %}
+
+{% macro navbar() %}
+<ul class="navbar">
+  <li><a href="/">Home</a></li>
+  <li><a href="/posts">All Posts</a></li>
+</ul>
+{% endmacro%}
