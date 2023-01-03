@@ -110,6 +110,17 @@ blockquote {
   }
 }
 
+.avatar {
+  width: 200px;
+  height: 200px;
+  margin: auto;
+
+  img {
+    border-radius: 50%;
+    border: 1px solid lighten($background-dark, 4%);
+  }
+}
+
 .socials {
   display: grid;
   width: 300px;

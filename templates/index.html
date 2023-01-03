@@ -3,25 +3,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>About</h1>
-    <p>My name is Aleksey Kuznetsov. I'm an iOS Engineer. This is my space
-    where I intend to write about programming, tech and life in general.</p>
-    <div class="socials">
-    {% for social in config.extra.socials %}
-        <div class="socialbox">
-            <a href="{{ social.link | safe }}">
-                <img src="{{ social.icon | safe }}" alt="{{ social.title }}" style="width:44px;height:44px;"></img>
-            </a>
-        </div>
-    {% endfor %}
-    </div>
-    <h1>Latest Posts</h1>
-    {% set_global years_sections = [] %}
-    {% set section = get_section(path="posts/_index.md") %}
-    {% for year_section_path in section.subsections %}
-        {% set_global years_sections = years_sections | concat(with=get_section(path=year_section_path)) %}
-    {% endfor %}
-    {% for year_section in years_sections | sort(attribute="title") | reverse %}
-        {{ macros::list_posts(pages=year_section.pages) }}
-    {% endfor %}
+<div class="avatar"><img src="/avatar.jpeg" alt="Avatar" /></div>
+<h1>About</h1>
+<p>My name is Aleksey Kuznetsov. I'm an iOS Engineer. This is my space
+  where I intend to write about programming, tech and life in general.</p>
+<div class="socials">
+  {% for social in config.extra.socials %}
+  <div class="socialbox">
+    <a href="{{ social.link | safe }}">
+      <img src="{{ social.icon | safe }}" alt="{{ social.title }}" style="width:44px;height:44px;"></img>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+<h1>Latest Posts</h1>
+{% set_global years_sections = [] %}
+{% set section = get_section(path="posts/_index.md") %}
+{% for year_section_path in section.subsections %}
+{% set_global years_sections = years_sections | concat(with=get_section(path=year_section_path)) %}
+{% endfor %}
+{% for year_section in years_sections | sort(attribute="title") | reverse %}
+{{ macros::list_posts(pages=year_section.pages) }}
+{% endfor %}
 {% endblock %}
