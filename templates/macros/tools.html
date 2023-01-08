@@ -1,6 +1,14 @@
-{% macro list_posts(pages) %}
+{% macro list_posts(pages, with_years) %}
 {% for page in pages %}
-<p>{{ page.date }} – <a href="{{ page.permalink | safe }}">{{ page.title }}</a></p>
+<p>
+  {% if with_years %}
+  <span class="date">{{ page.date | date(format="%B %d, %Y") }}</span>
+  {% else %}
+  <span class="date">{{ page.date | date(format="%B %d") }}</span>
+  {% endif %}
+  <br>
+  <a href="{{ page.permalink | safe }}" class="post-link">{{ page.title }}</a>
+</p>
 {% endfor %}
 {% endmacro %}
 

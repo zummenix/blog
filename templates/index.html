@@ -23,6 +23,6 @@
 {% set_global years_sections = years_sections | concat(with=get_section(path=year_section_path)) %}
 {% endfor %}
 {% for year_section in years_sections | sort(attribute="title") | reverse %}
-{{ macros::list_posts(pages=year_section.pages) }}
+{{ macros::list_posts(pages=year_section.pages, with_years=true) }}
 {% endfor %}
 {% endblock %}

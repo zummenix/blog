@@ -139,7 +139,10 @@ blockquote {
 .date {
   color: darken($foreground-dark, 15%);
   font-size: 80%;
-  font-style: italic;
+}
+
+.post-link {
+  text-decoration: none;
 }
 
 .footnote-definition {

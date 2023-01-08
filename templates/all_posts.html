@@ -11,6 +11,6 @@
 {% endfor %}
 {% for year_section in years_sections | sort(attribute="title") | reverse %}
 <h2>{{ year_section.title }}</h2>
-{{ macros::list_posts(pages=year_section.pages) }}
+{{ macros::list_posts(pages=year_section.pages, with_years=false) }}
 {% endfor %}
 {% endblock %}
