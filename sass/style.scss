@@ -53,10 +53,6 @@ body {
   pre code {
     background-color: transparent;
   }
-
-  .footnote-definition sup {
-    color: $tertiary-dark;
-  }
 }
 
 code {
@@ -143,14 +139,6 @@ blockquote {
 
 .post-link {
   text-decoration: none;
-}
-
-.footnote-definition {
-  margin-top: 1em;
-
-  p {
-    display: inline;
-  }
 }
 
 @media all and (max-width: 1200px) {
