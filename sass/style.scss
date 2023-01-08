@@ -53,10 +53,6 @@ body {
   pre code {
     background-color: transparent;
   }
-
-  .footnote-definition sup {
-    color: $tertiary-dark;
-  }
 }
 
 code {
@@ -134,20 +130,20 @@ blockquote {
   justify-content: center;
   align-items: center;
   grid-row: 1;
+
+  img {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 .date {
   color: darken($foreground-dark, 15%);
   font-size: 80%;
-  font-style: italic;
 }
 
-.footnote-definition {
-  margin-top: 1em;
-
-  p {
-    display: inline;
-  }
+.post-link {
+  text-decoration: none;
 }
 
 @media all and (max-width: 1200px) {
