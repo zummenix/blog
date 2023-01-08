@@ -12,7 +12,7 @@
   {% for social in config.extra.socials %}
   <div class="socialbox">
     <a href="{{ social.link | safe }}">
-      <img src="{{ social.icon | safe }}" alt="{{ social.title }}" style="width:44px;height:44px;"></img>
+      <img src="{{ social.icon | safe }}" alt="{{ social.title }}" />
     </a>
   </div>
   {% endfor %}

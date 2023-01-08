@@ -130,6 +130,11 @@ blockquote {
   justify-content: center;
   align-items: center;
   grid-row: 1;
+
+  img {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 .date {
