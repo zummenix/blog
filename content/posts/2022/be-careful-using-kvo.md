@@ -1,5 +1,6 @@
 +++
 title = "You should still be careful using KVO"
+description = "Discovering and solving an issue with KVO"
 date = 2022-08-15
 +++
 

@@ -2,6 +2,10 @@
 
 {% extends "base.html" %}
 
+{% block meta_description %}
+<meta name="description" content="All my posts of year of {{ section.title }}">
+{% endblock %}
+
 {% block content %}
 {{ macros::navbar() }}
 <h1 class="title">Posts of {{ section.title }}</h1>
