@@ -1,5 +1,6 @@
 +++
 title = "SwiftFormat only changed files"
+description = "How to run swiftformat or swiftlint and other tools only on changed files leveraging awk"
 date = 2023-01-07
 +++
 
