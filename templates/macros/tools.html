@@ -6,6 +6,12 @@
   {% else %}
   <span class="date">{{ page.date | date(format="%B %d") }}</span>
   {% endif %}
+  <span class="tags-list">|
+    {% for tag in page.taxonomies["tags"] %}
+    <a href="/tags/{{ tag }}">{{ tag }}</a>
+    {% if not loop.last %}·{% endif %}
+    {% endfor %}
+  </span>
   <br>
   <a href="{{ page.permalink | safe }}" class="post-link">{{ page.title }}</a>
 </p>
