@@ -2,6 +2,8 @@
 title = "You should still be careful using KVO"
 description = "Discovering and solving an issue with KVO"
 date = 2022-08-15
+[taxonomies]
+tags=["swift", "objc", "kvo"]
 +++
 
 Key-Value Observing or KVO for short is a good technology. Especially, when you

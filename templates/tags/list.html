@@ -1,0 +1,16 @@
+{% import "macros/tools.html" as macros %}
+
+{% extends "base.html" %}
+
+{% block meta_description %}
+<meta name="description" content="All tags">
+{% endblock %}
+
+{% block content %}
+{{ macros::navbar() }}
+<h1 class="title">All tags</h1>
+{% for term in terms | sort(attribute="name") %}
+<h2>{{ term.name }}</h2>
+{{ macros::list_posts(pages=term.pages, with_years=true) }}
+{% endfor %}
+{% endblock %}

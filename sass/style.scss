@@ -142,6 +142,20 @@ blockquote {
   font-size: 80%;
 }
 
+.tags-list {
+  color: darken($foreground-dark, 15%);
+  font-size: 80%;
+
+  a {
+    color: inherit !important;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
 .post-link {
   text-decoration: none;
 }

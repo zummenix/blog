@@ -1,0 +1,13 @@
+{% import "macros/tools.html" as macros %}
+
+{% extends "base.html" %}
+
+{% block meta_description %}
+<meta name="description" content="All posts for '{{ term.name }}' tag">
+{% endblock %}
+
+{% block content %}
+{{ macros::navbar() }}
+<h1 class="title">Tag: {{ term.name }}</h1>
+{{ macros::list_posts(pages=term.pages, with_years=true) }}
+{% endblock %}
