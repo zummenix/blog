@@ -14,7 +14,7 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v3.5.3
       - name: Check typos
-        uses: crate-ci/typos@v1.16.7
+        uses: crate-ci/typos@v1.16.8
       - name: Build only and check links
         uses: shalzz/zola-deploy-action@v0.17.2
         env:
