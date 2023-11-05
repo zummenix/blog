@@ -110,3 +110,5 @@ even impossible to create big RAM disks without going into 128 GB territory.
 
 As for myself, I've decided to run this setup for a week or two to see if it
 feels faster.
+
+[Discuss on Reddit](https://www.reddit.com/r/iOSProgramming/comments/17og1nm/is_it_worth_it_to_have_deriveddata_on_a_ram_disk/)
