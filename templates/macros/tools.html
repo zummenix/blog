@@ -2,9 +2,9 @@
 {% for page in pages %}
 <p>
   {% if with_years %}
-  <span class="date">{{ page.date | date(format="%B %d, %Y") }}</span>
+  <span class="date">{{ page.date | date(format="%B %e, %Y") }}</span>
   {% else %}
-  <span class="date">{{ page.date | date(format="%B %d") }}</span>
+  <span class="date">{{ page.date | date(format="%B %e") }}</span>
   {% endif %}
   <span class="tags-list">|
     {% for tag in page.taxonomies["tags"] %}
