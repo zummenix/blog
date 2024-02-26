@@ -11,6 +11,9 @@ taxonomies = [
 [markdown]
 highlight_code = true
 
+[link_checker]
+external_level = "warn"
+
 [extra]
 socials = [
     { title = "Mail", link = "mailto:zummenix@gmail.com" , icon = "/socials/mail.svg" },
