@@ -1,6 +1,6 @@
 base_url = "https://zummenix.github.io"
 
-generate_feed = true
+generate_feeds = true
 compile_sass = true
 minify_html = true
 
