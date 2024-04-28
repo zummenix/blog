@@ -12,7 +12,7 @@ jobs:
     if: github.ref != 'refs/heads/main'
     steps:
       - name: Checkout main
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.4
       - name: Check typos
         uses: crate-ci/typos@v1.20.9
       - name: Build only and check links
@@ -28,7 +28,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout main
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.4
       - name: Build and deploy
         uses: shalzz/zola-deploy-action@v0.18.0
         env:
