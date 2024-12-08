@@ -9,11 +9,14 @@ body {
   padding: 0;
 }
 
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14pt;
 
-  padding: 2em 25%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
   color: $foreground-dark;
   background-color: $background-dark;
@@ -53,6 +56,11 @@ body {
   pre code {
     background-color: transparent;
   }
+}
+
+main {
+  flex: 1;
+  padding: 2em 25%;
 }
 
 code {
@@ -104,6 +112,16 @@ blockquote {
     padding: 14px;
     text-decoration: none;
   }
+}
+
+footer {
+  text-align: center;
+  padding: 8px;
+  margin-top: 50px;
+  border-top: 1px solid lighten($background-dark, 4%);
+  width: 100%;
+  font-size: 65%;
+  font-weight: 100;
 }
 
 .avatar {

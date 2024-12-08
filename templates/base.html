@@ -23,6 +23,11 @@
   <main>
     {% block content %} {% endblock %}
   </main>
+  <footer>
+    <p>&copy; {{ now() | date(format="%Y") }} Aleksey Kuznetsov. All rights reserved.</p>
+    <p>Content and media are licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA
+        4.0</a> License. Code samples are under the <a href="/licenses/unlicense.txt">Unlicense</a>.</p>
+  </footer>
 </body>
 
 </html>
