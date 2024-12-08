@@ -6,9 +6,6 @@ date = 2023-01-07
 tags = ["swift", "git", "awk", "bash"]
 +++
 
-> The code in this post is under [Unlicense](/licenses/unlicense.txt).
-> Feel free to use it as you wish.
-
 There are a couple of reasons to run formatting or linting tools only on files
 that have been changed. In a big legacy project you probably don't want to
 format all files right away. Also you don't want spending extra seconds running
