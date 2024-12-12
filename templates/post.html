@@ -10,15 +10,15 @@
 {{ macros::navbar() }}
 <h1>{{ page.title }}</h1>
 <p>
-  <span class="date">Published on {{ page.date | date(format="%B %e, %Y") }}</span>
-  <br>
   <span class="tags-list">
-    Tags:
+    {{ macros::tag_icon() }}
     {% for tag in page.taxonomies["tags"] %}
-    <a href="/tags/{{ tag }}">{{ tag }}</a>
+    {{ macros::tag(name=tag) }}
     {% if not loop.last %}·{% endif %}
     {% endfor %}
   </span>
+  <br />
+  <span class="date">{{ macros::calendar_icon() }}{{ page.date | date(format="%B %e, %Y") }}</span>
 </p>
 {{ page.content | safe }}
 {% endblock %}

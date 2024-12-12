@@ -9,6 +9,15 @@ body {
   padding: 0;
 }
 
+.svg-icon {
+  display: inline-flex;
+  align-self: center;
+  height: 1em;
+  width: 1em;
+  top: .125em;
+  position: relative;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14pt;
