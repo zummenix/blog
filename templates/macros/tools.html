@@ -2,20 +2,10 @@
 {% for page in pages %}
 <p>
   <a href="{{ page.permalink | safe }}" class="post-link">{{ page.title }}</a>
-  <br />
-  <span class="tags-list">
-    {{ macros::tag_icon() }}&thinsp;
-    {%- for tag in page.taxonomies["tags"] -%}
-    {{ macros::tag(name=tag) }}
-    {% if not loop.last %}·{% endif %}
-    {% endfor %}
-  </span>
-  <br />
-  {% if with_years %}
-  <span class="date">{{ macros::calendar_icon() }}&thinsp;{{ page.date | date(format="%B %e, %Y") }}</span>
-  {% else %}
-  <span class="date">{{ macros::calendar_icon() }}&thinsp;{{ page.date | date(format="%B %e") }}</span>
-  {% endif %}
+  <br>
+  {{ macros::list_tags(tags=page.taxonomies.tags) }}
+  <br>
+  {{ macros::show_date(date=page.date, with_years=true) }}
 </p>
 {% endfor %}
 {% endmacro %}
@@ -27,7 +17,24 @@
 </ul>
 {% endmacro%}
 
-{% macro tag(name) %}<a href="/tags/{{ name }}">{{ name }}</a>{% endmacro %}
+{% macro list_tags(tags) %}
+<span class="tags-list">
+  {{ macros::tag_icon() }}&thinsp;
+  {%- for tag in tags -%}
+  <a href="/tags/{{ tag }}">{{ tag }}</a>
+  {% if not loop.last %}·{% endif %}
+  {% endfor %}
+</span>
+{% endmacro %}
+
+{% macro show_date(date, with_years) %}
+{% if with_years %}
+{% set date_format = "%B %e, %Y" %}
+{% else %}
+{% set date_format = "%B %e" %}
+{% endif %}
+<span class="date">{{ macros::calendar_icon() }}&thinsp;{{ date | date(format=date_format) }}</span>
+{% endmacro %}
 
 {% macro tag_icon() %}
 <svg class="svg-icon" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none">
