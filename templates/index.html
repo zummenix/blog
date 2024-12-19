@@ -27,7 +27,11 @@
 {% for year_section_path in section.subsections %}
 {% set_global years_sections = years_sections | concat(with=get_section(path=year_section_path)) %}
 {% endfor %}
-{% for year_section in years_sections | sort(attribute="title") | reverse %}
-{{ macros::list_posts(pages=year_section.pages, with_years=true) }}
+{% set_global pages = [] %}
+{% for year_section in years_sections | sort(attribute="title") | reverse | slice(end=3) %}
+{% set_global pages = pages | concat(with=year_section.pages) %}
 {% endfor %}
+{% set_global pages = pages | slice(end=3) %}
+{{ macros::list_posts(pages=pages, with_years=true) }}
+<p class="link-button"><a href="/posts">All Posts →</a></p>
 {% endblock %}
