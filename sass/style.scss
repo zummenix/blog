@@ -164,22 +164,19 @@ blockquote {
 }
 
 .socials {
-  display: grid;
-  width: 300px;
-  margin: auto;
-  padding-top: 40px;
-  padding-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .socialbox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-row: 1;
+  margin: 10px;
+  width: 44px;
+  height: 44px;
 
   img {
-    width: 44px;
-    height: 44px;
+    width: inherit;
+    height: inherit;
   }
 }
 
