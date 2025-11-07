@@ -167,17 +167,13 @@ blockquote {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin: 3em 0 3em;
+  gap: 20px;
 }
 
 .socialbox {
-  margin: 10px;
   width: 44px;
   height: 44px;
-
-  img {
-    width: inherit;
-    height: inherit;
-  }
 }
 
 .date {
