@@ -12,7 +12,7 @@
 <p>
   {{ macros::list_tags(tags=page.taxonomies.tags) }}
   <br>
-  {{ macros::show_date(date=page.date, with_years=false) }}
+  {{ macros::show_date(date=page.date, with_years=true) }}
 </p>
 {{ page.content | safe }}
 {% endblock %}
