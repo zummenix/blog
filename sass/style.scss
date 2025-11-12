@@ -56,13 +56,10 @@ body {
   }
 
   code {
+    padding: 0.2em 0.3em;
     background-color: $tertiary-dark;
-    font-size: 85%;
-    border-radius: 6px;
-  }
-
-  pre code {
-    background-color: transparent;
+    border-radius: 0.3em;
+    font-size: 84%;
   }
 }
 
@@ -92,17 +89,13 @@ footer {
   font-weight: 100;
 }
 
-code {
-  padding: 0.2em 0.3em;
-  font-size: 12pt;
-}
-
 pre {
   overflow: auto;
-  padding: 0.3em;
+  padding: 0.3em 0.3em 0.6em;
+  border-radius: 0.3em;
 
   code {
-    padding: 0;
+    background-color: transparent;
   }
 }
 
