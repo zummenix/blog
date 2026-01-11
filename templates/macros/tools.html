@@ -11,11 +11,13 @@
 {% endmacro %}
 
 {% macro navbar() %}
-<ul class="navbar">
-  <li><a href="/">Home</a></li>
-  <li><a href="/posts">All Posts</a></li>
-</ul>
-{% endmacro%}
+<nav>
+  <ul class="navbar">
+    <li><a href="/">Home</a></li>
+    <li><a href="/posts">All Posts</a></li>
+  </ul>
+</nav>
+{% endmacro %}
 
 {% macro list_tags(tags) %}
 <span class="tags-list">
