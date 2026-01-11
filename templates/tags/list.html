@@ -6,8 +6,11 @@
 <meta name="description" content="All tags">
 {% endblock %}
 
-{% block content %}
+{% block navigation %}
 {{ macros::navbar() }}
+{% endblock %}
+
+{% block content %}
 <h1 class="title">All tags</h1>
 {% for term in terms | sort(attribute="name") %}
 <h2>{{ term.name }}</h2>
