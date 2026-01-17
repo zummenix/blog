@@ -1,0 +1,17 @@
+{% import "macros/tools.html" as macros %}
+
+{% extends "base.html" %}
+
+{% block meta_description %}
+<meta name="description" content="{{ section.description }}">
+{% endblock %}
+
+{% block navigation %}
+{{ macros::navbar() }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ section.title }}</h1>
+<i>{{ section.description }}</i>
+{{ section.content | safe }}
+{% endblock %}

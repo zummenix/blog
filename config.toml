@@ -10,6 +10,8 @@ taxonomies = [
 
 [markdown]
 highlight_code = true
+definition_list = true
+external_links_target_blank = true
 
 [link_checker]
 external_level = "warn"
