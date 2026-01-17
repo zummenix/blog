@@ -9,9 +9,11 @@
 {% block content %}
 <div class="avatar"><img src="/avatar.jpeg" alt="Avatar" /></div>
 <h1>About</h1>
-<p>My name is Aleksey Kuznetsov. This is my space where I intend to write
-  mostly about iOS development, programming in Swift and Rust. I'm also
-  interested in other technologies, psychology and personal growth.</p>
+<p>My name is Aleksey Kuznetsov. This is my space where I intend to write mostly
+  about iOS development, programming in Swift and Rust. I'm also interested
+  in other technologies, psychology and personal growth.</p>
+<p>I also keep a <a href="/links">curated list of links</a> that are too valuable
+  to lose.</p>
 <div class="socials">
   {% for social in config.extra.socials %}
   <a href="{{ social.link | safe }}" class="socialbox">
