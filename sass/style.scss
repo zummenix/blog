@@ -65,6 +65,11 @@ body {
     }
   }
 
+  a {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
   a,
   a:link,
   a:visited {
