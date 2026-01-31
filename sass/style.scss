@@ -93,7 +93,9 @@ body {
   }
 
   dl {
-    dt {
+    padding-bottom: 1.3em;
+
+    dt:not(:first-child) {
       padding-top: 1.3em;
     }
 
