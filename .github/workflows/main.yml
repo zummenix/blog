@@ -16,7 +16,7 @@ jobs:
       - name: Check typos
         uses: crate-ci/typos@v1.42.3
       - name: Build only and check links
-        uses: shalzz/zola-deploy-action@v0.22.0
+        uses: shalzz/zola-deploy-action@v0.22.1
         env:
           BUILD_ONLY: true
           CHECK_LINKS: true
@@ -30,7 +30,7 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v6.0.2
       - name: Build and deploy
-        uses: shalzz/zola-deploy-action@v0.22.0
+        uses: shalzz/zola-deploy-action@v0.22.1
         env:
           REPOSITORY: zummenix/zummenix.github.io
           PAGES_BRANCH: main
