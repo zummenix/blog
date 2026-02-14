@@ -18,6 +18,10 @@ description = "A curated list of links that are too valuable to lose!"
 
 : <https://albertodebortoli.com/2026/01/15/universal-links-at-scale-the-challenges-nobody-talks-about>
 
+**Swift Concurrency from Zero to Hero | Reading List**
+
+: <https://swiftology.io/articles/swift-concurrency-zero-to-hero/>
+
 ## Watch
 
 **"The Economics of Programming Languages" by Evan Czaplicki (Strange Loop 2023)**
