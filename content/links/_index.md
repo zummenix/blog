@@ -22,6 +22,10 @@ description = "A curated list of links that are too valuable to lose!"
 
 : <https://swiftology.io/articles/swift-concurrency-zero-to-hero/>
 
+**sandbox-exec: macOS's Little-Known Command-Line Sandboxing Tool**
+
+: <https://igorstechnoclub.com/sandbox-exec/>
+
 ## Watch
 
 **"The Economics of Programming Languages" by Evan Czaplicki (Strange Loop 2023)**
