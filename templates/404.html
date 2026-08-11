@@ -1,9 +1,13 @@
-{% import "macros/tools.html" as macros %}
-
 {% extends "base.html" %}
 
 {% block navigation %}
-{{ macros::navbar() }}
+<header>
+  <nav>
+    <a href="/posts">All Posts</a>
+    <a href="/links">Links</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
 {% endblock %}
 
 {% block content %}
