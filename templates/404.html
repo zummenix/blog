@@ -1,13 +1,7 @@
 {% extends "base.html" %}
 
 {% block navigation %}
-<header>
-  <nav>
-    <a href="/posts">All Posts</a>
-    <a href="/links">Links</a>
-    <a href="/">Home</a>
-  </nav>
-</header>
+{{<blog.navbar />}}
 {% endblock %}
 
 {% block content %}
