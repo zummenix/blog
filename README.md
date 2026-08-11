@@ -1,7 +1,7 @@
 # Personal blog
 
 Powered by [Zola](https://www.getzola.org) - a static site generator and
-[Tera](https://tera.netlify.app) - a template engine.
+[Tera](https://keats.github.io/tera) - a template engine.
 
 ## Contributing
 
