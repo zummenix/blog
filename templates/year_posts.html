@@ -1,5 +1,3 @@
-{% import "macros/tools.html" as macros %}
-
 {% extends "base.html" %}
 
 {% block meta_description %}
@@ -7,10 +5,10 @@
 {% endblock %}
 
 {% block navigation %}
-{{ macros::navbar() }}
+{{<blog.navbar />}}
 {% endblock %}
 
 {% block content %}
 <h1 class="title">Posts of {{ section.title }}</h1>
-{{ macros::list_posts(pages=section.pages, with_years=false) }}
+{{<blog.post_list pages={section.pages} />}}
 {% endblock %}

@@ -1,5 +1,3 @@
-{% import "macros/tools.html" as macros %}
-
 {% extends "base.html" %}
 
 {% block meta_description %}
@@ -7,13 +5,13 @@
 {% endblock %}
 
 {% block navigation %}
-{{ macros::navbar() }}
+{{<blog.navbar />}}
 {% endblock %}
 
 {% block content %}
 <h1 class="title">All tags</h1>
 {% for term in terms | sort(attribute="name") %}
 <h2>{{ term.name }}</h2>
-{{ macros::list_posts(pages=term.pages, with_years=true) }}
+{{<blog.post_list pages={term.pages} />}}
 {% endfor %}
 {% endblock %}
