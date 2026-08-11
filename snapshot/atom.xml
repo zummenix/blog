@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title></title>
+    <link rel="self" type="application/atom+xml" href="https://zummenix.github.io/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://zummenix.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-12-02T00:00:00+00:00</updated>
+    <id>https://zummenix.github.io/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Disable Spotlight and life without it</title>
+        <published>2024-12-02T00:00:00+00:00</published>
+        <updated>2024-12-02T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://zummenix.github.io/posts/2024/disable-spotlight/"/>
+        <id>https://zummenix.github.io/posts/2024/disable-spotlight/</id>
+        
+        <content type="html" xml:base="https://zummenix.github.io/posts/2024/disable-spotlight/">&lt;p&gt;I&#x27;ve recently noticed that the &lt;code&gt;mds_stores&lt;&#x2F;code&gt; process on my Mac is consuming a
+significant amount of CPU power. Again.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;mds_stores&lt;&#x2F;code&gt; is a background process that indexes files for faster searching in
+Spotlight. Seasoned macOS users very likely know about it and know that wise
+decision would be to disable some of search areas by changing Spotlight settings.
+This is me too. I have only Applications, Calculator and System Settings items
+enabled and still &lt;code&gt;mds_stores&lt;&#x2F;code&gt; is the first in the list of cpu consumers in
+Activity Monitor. I&#x27;m not sure if it happened after updating macOS or earlier
+for some other reason.&lt;&#x2F;p&gt;
+&lt;p&gt;Something needs to be done. This is last straw :)&lt;&#x2F;p&gt;
+&lt;p&gt;I&#x27;m disabling Spotlight completely:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;sudo&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; mdutil -ai off&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;It spat out the following:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&#x2F;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;2024-11-22 00:21:40.119 mdutil[25437:982881] mdutil disabling Spotlight: &#x2F; -&amp;gt; kMDConfigSearchLevelFSSearchOnly&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        Indexing disabled.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&#x2F;System&#x2F;Volumes&#x2F;Data:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;2024-11-22 00:21:40.144 mdutil[25437:982881] mdutil disabling Spotlight: &#x2F;System&#x2F;Volumes&#x2F;Data -&amp;gt; kMDConfigSearchLevelFSSearchOnly&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Error: unable to perform operation.  (-1)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        Error: unknown indexing state.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&#x2F;System&#x2F;Volumes&#x2F;Preboot:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Error: invalid operation.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        Error: unknown indexing state.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Maybe these errors are somehow related to the problem. After running the command
+second time it reported that indexing is disabled without any errors.&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s sad to loose Spotlight functionality. Brief research revealed existence of
+similar apps such as &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.alfredapp.com&quot;&gt;Alfred&lt;&#x2F;a&gt; or
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.raycast.com&quot;&gt;Raycast&lt;&#x2F;a&gt;. I haven&#x27;t tried them because I probably
+can&#x27;t use most of their features. Eventually I figured that I can write
+simple alternatives for my needs myself. That I did.&lt;&#x2F;p&gt;
+&lt;p&gt;The main feature of Spotlight that I miss the most is fast opening any app by
+typing in Spotlight search field. The solution would be to search the &lt;code&gt;*.app&lt;&#x2F;code&gt;
+in special directories. Filter&#x2F;search could be done using
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;junegunn.github.io&#x2F;fzf&#x2F;&quot;&gt;&lt;code&gt;fzf&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; (or similar tools). And opening an
+app will be done using native Apple script. Here is the first working script
+in bash:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #616E88;&quot;&gt;#!&#x2F;usr&#x2F;bin&#x2F;env bash&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;function&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; list_apps&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    find&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -type d -maxdepth&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;*.app&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; sed&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;s#.*&#x2F;##&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; sed&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;s&#x2F;.app$&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;paste&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -d&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;\n&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39; &amp;lt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;list_apps&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; &#x2F;Applications&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) &amp;lt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;list_apps&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; &#x2F;System&#x2F;Applications&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) &amp;lt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;list_apps&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; &#x2F;System&#x2F;Applications&#x2F;Utilities&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #EBCB8B;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    xargs&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -I&lt;&#x2F;span&gt;&lt;span&gt;{} echo &amp;quot;{}&amp;quot; | \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    sort&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -if&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #EBCB8B;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    fzf&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; --header&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;Select app to open&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #EBCB8B;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    xargs&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -I&lt;&#x2F;span&gt;&lt;span&gt;{} osascript -e &amp;quot;tell application \&amp;quot;{}\&amp;quot; to activate&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Here is how it looks:&lt;&#x2F;p&gt;
+&lt;div&gt;
+&lt;script src=&quot;https:&#x2F;&#x2F;asciinema.org&#x2F;a&#x2F;693053.js&quot; id=&quot;asciicast-693053&quot; async=&quot;true&quot;&gt;&lt;&#x2F;script&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;I&#x27;ll probably update this script in the future if I find any bugs or find myself
+missing some features. You can always check my dotfiles for that
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;zummenix&#x2F;dotfiles&#x2F;tree&#x2F;master&#x2F;scripts&quot;&gt;here&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;For now I&#x27;m happy with this simple solution, knowing that &lt;code&gt;mds_stores&lt;&#x2F;code&gt; won&#x27;t
+use any cpu to no purpose.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Is it worth it to have DerivedData on a RAM disk?</title>
+        <published>2023-11-05T00:00:00+00:00</published>
+        <updated>2023-11-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://zummenix.github.io/posts/2023/derived-data-ram-disk/"/>
+        <id>https://zummenix.github.io/posts/2023/derived-data-ram-disk/</id>
+        
+        <content type="html" xml:base="https://zummenix.github.io/posts/2023/derived-data-ram-disk/">&lt;p&gt;As you probably know, Xcode stores intermediate build files and indexes in
+&lt;code&gt;DerivedData&lt;&#x2F;code&gt; directory, &lt;code&gt;~&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;DerivedData&lt;&#x2F;code&gt; to be precise.
+It helps improve build performance by caching previously built artifacts
+and allowing for incremental builds. One of the ways to improve Xcode build
+times is to create a virtual disk in memory (RAM disk) and mount it in place
+of &lt;code&gt;DerivedData&lt;&#x2F;code&gt; directory. With modern Apple devices this becomes somewhat
+possible and I&#x27;ve decided to try it out.&lt;&#x2F;p&gt;
+&lt;p&gt;I have M1 Max MacBook Pro with 64 GB of memory. Usually, I don&#x27;t consume all of
+the memory during development, so I can put aside some for a RAM disk.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;creating-a-ram-disk&quot;&gt;Creating a RAM disk&lt;&#x2F;h2&gt;
+&lt;p&gt;I will use terminal and available tools to create a RAM disk with a file system
+and mount it.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Creating a disk&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;hdiutil&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; attach -nomount ram:&#x2F;&#x2F;33554432&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The magic number is &lt;code&gt;blockcount&lt;&#x2F;code&gt;, one block is 512 bytes, so 33554432 is around
+17 GB.&lt;&#x2F;p&gt;
+&lt;p&gt;This will return something like &lt;code&gt;&#x2F;dev&#x2F;disk4&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note, that the disk index can be different for you, so adjust the following
+commands accordingly.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;You can verify the disk has been created by running &lt;code&gt;hdiutil info&lt;&#x2F;code&gt;. Also, at any
+point you can get rid of the disk by running &lt;code&gt;hdiutil eject &#x2F;dev&#x2F;disk4&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;The disk doesn&#x27;t have a file system, we need to create one. I will create
+APFS but you can explore others&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;newfs_apfs&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -v DerivedData &#x2F;dev&#x2F;disk4&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;DerivedData&lt;&#x2F;code&gt; here is the name of the volume. It could be anything and will be
+visible in Finder as an external disk.&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s check the result by running &lt;code&gt;diskutil list&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&amp;lt;omitted&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&#x2F;dev&#x2F;disk4 (disk image):&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   #:                       TYPE NAME                    SIZE       IDENTIFIER&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   0:                                                   +17.2 GB    disk4&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&#x2F;dev&#x2F;disk5 (synthesized):&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   #:                       TYPE NAME                    SIZE       IDENTIFIER&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   0:      APFS Container Scheme -                      +17.2 GB    disk5&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                                 Physical Store disk4&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   1:                APFS Volume DerivedData             20.5 KB    disk5s1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;You should see created &lt;code&gt;DerivedData&lt;&#x2F;code&gt; volume with &lt;code&gt;disk5s1&lt;&#x2F;code&gt; identifier. We need
+that for the last step.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;Mounting to &lt;code&gt;DerivedData&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;mount_apfs&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; &#x2F;dev&#x2F;disk5s1 Library&#x2F;Developer&#x2F;Xcode&#x2F;DerivedData&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;That&#x27;s all. The RAM disk is successfully created and mounted.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;measuring-xcode-build-performance&quot;&gt;Measuring Xcode build performance&lt;&#x2F;h2&gt;
+&lt;p&gt;As a benchmark I took our current work project, decent size, takes around 5
+minutes to build.&lt;&#x2F;p&gt;
+&lt;p&gt;The following results are after second clean build for both. Please take these
+timings with a grain of salt. I don&#x27;t trust these numbers myself :). On several
+runs I&#x27;ve even noticed there are no improvements in time.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;deriveddata-is-on-ssd-disk&quot;&gt;DerivedData is on SSD disk&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;em&gt;4min 47s&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;zummenix.github.io&#x2F;posts&#x2F;2023&#x2F;derived-data-ram-disk&#x2F;.&#x2F;disk-derived-data.png&quot; alt=&quot;When DerivedData is on SSD disk&quot; title=&quot;When DerivedData is on SSD disk&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;deriveddata-is-on-ram-disk&quot;&gt;DerivedData is on RAM disk&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;em&gt;3min 59s&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;zummenix.github.io&#x2F;posts&#x2F;2023&#x2F;derived-data-ram-disk&#x2F;.&#x2F;ram-derived-data.png&quot; alt=&quot;When DerivedData is on RAM disk&quot; title=&quot;When DerivedData is on RAM disk&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;in-conclusion&quot;&gt;In conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;Though, numbers show that the RAM disk is faster, in reality I&#x27;d argue that
+it hardly matters for local builds. I&#x27;d like to measure performance for
+incremental builds but it&#x27;s hard to do correctly and there will be a lot more
+variables involved. Modern SSDs are fast enough that it&#x27;s very hard to justify
+inconveniences of creating and managing a RAM disk. For bigger projects it&#x27;s
+even impossible to create big RAM disks without going into 128 GB territory.&lt;&#x2F;p&gt;
+&lt;p&gt;As for myself, I&#x27;ve decided to run this setup for a week or two to see if it
+feels faster.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;iOSProgramming&#x2F;comments&#x2F;17og1nm&#x2F;is_it_worth_it_to_have_deriveddata_on_a_ram_disk&#x2F;&quot;&gt;Discuss on Reddit&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>SwiftFormat only changed files</title>
+        <published>2023-01-07T00:00:00+00:00</published>
+        <updated>2023-01-07T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://zummenix.github.io/posts/2023/swiftformat-changed-files/"/>
+        <id>https://zummenix.github.io/posts/2023/swiftformat-changed-files/</id>
+        
+        <content type="html" xml:base="https://zummenix.github.io/posts/2023/swiftformat-changed-files/">&lt;p&gt;There are a couple of reasons to run formatting or linting tools only on files
+that have been changed. In a big legacy project you probably don&#x27;t want to
+format all files right away. Also you don&#x27;t want spending extra seconds running
+these kinds of tools.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I want to note that &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nicklockwood&#x2F;SwiftFormat&quot;&gt;nicklockwood&#x2F;SwiftFormat&lt;&#x2F;a&gt;
+uses caching by default, so the second point might be irrelevant.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;One solution is to use git to identify files that have been changed and run
+swiftformat on those. When I decided to implement this strategy I found a
+snippet of a bash script that does what I need. At least, I thought.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; diff --diff-filter=d --name-only&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; grep&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;\(.*\).swift$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; | while&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; read&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;; do&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    swiftformat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;  --swiftversion&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 5.0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;${&lt;&#x2F;span&gt;&lt;span&gt;line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;done&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Let&#x27;s see what is going on here. It uses &lt;code&gt;git diff&lt;&#x2F;code&gt; subcommand with argument
+&lt;code&gt;--diff-filter=d&lt;&#x2F;code&gt; and &lt;code&gt;--name-only&lt;&#x2F;code&gt; flag. &lt;code&gt;--diff-filter=d&lt;&#x2F;code&gt;, according to
+documentation, excludes paths for files that have been deleted, &lt;code&gt;--name-only&lt;&#x2F;code&gt;
+shows only file paths. The output of &lt;code&gt;git diff&lt;&#x2F;code&gt; is piped to &lt;code&gt;grep&lt;&#x2F;code&gt; with a regex
+to filter only &lt;code&gt;swift&lt;&#x2F;code&gt; files and then the result is piped to the &lt;code&gt;while&lt;&#x2F;code&gt; loop
+in which we run swiftformat for each file path.&lt;&#x2F;p&gt;
+&lt;p&gt;This looks logical. You put this snippet in a file, make it executable and
+add it in a build phase in your Xcode project. It works in almost all cases.
+After working with this setup for a while I&#x27;ve noticed, for example, that this
+doesn&#x27;t handle newly created files. It is a bummer and completely unexpected.&lt;&#x2F;p&gt;
+&lt;p&gt;I didn&#x27;t find any other solution, so I decided to look at &lt;code&gt;git status&lt;&#x2F;code&gt;. Seems
+like it knows and shows newly created, changed and renamed files. That is what
+we need. &lt;code&gt;git status&lt;&#x2F;code&gt; also has &lt;code&gt;--porcelain&lt;&#x2F;code&gt; flag which adds guaranties that
+format of the output doesn&#x27;t change between git versions. Let&#x27;s explore this
+solution further. If you run &lt;code&gt;git status --porcelain&lt;&#x2F;code&gt;, you&#x27;ll see the output
+that looks something like this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A  file.swift&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;?? another-file.swift&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Basically, it&#x27;s a table with a status and a file path for each file. Our task
+is to filter the output of &lt;code&gt;git status --porcelain&lt;&#x2F;code&gt; by statuses and return
+file paths. This should be pretty easy to do in any programming language. I was
+thinking about using swift for this but decided to go against it. I don&#x27;t want
+to impose a compilation step on the team. Another reason was that I wanted to
+try &lt;code&gt;awk&lt;&#x2F;code&gt; :). For those who don&#x27;t know, &lt;code&gt;awk&lt;&#x2F;code&gt; is a text processing language and
+a tool. It is installed by default on every unix and linux. Since macos is a
+descendant of unix, we have it too. Nice!&lt;&#x2F;p&gt;
+&lt;p&gt;Next step is to read the documentation about different statuses. &lt;code&gt;git status --help&lt;&#x2F;code&gt;.  Ok, I think I understand the gist. Let&#x27;s try it in practice and see
+what we are dealing with. The statuses that we are interested in are:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;M&lt;&#x2F;code&gt;- modified&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;&#x2F;code&gt;- added&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;AM&lt;&#x2F;code&gt;- added and modified&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;??&lt;&#x2F;code&gt; - newly created untracted files&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;R&lt;&#x2F;code&gt; - renamed&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;RM&lt;&#x2F;code&gt; - renamed and modified&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Seems like the above list is complete for our use case.&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s time to try &lt;code&gt;awk&lt;&#x2F;code&gt; for real. You probably saw usage of &lt;code&gt;awk&lt;&#x2F;code&gt; in some
+scripts and maybe it looked like one-liner in a bash command. But here we have
+a lot to handle. So I decided to put all logic in a separate file and pass it
+to &lt;code&gt;awk&lt;&#x2F;code&gt; using &lt;code&gt;-f&lt;&#x2F;code&gt; argument. Now I&#x27;ll show you the script that evolved during
+my late evening working on this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;awk&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;  if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;M&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;A&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;AM&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;??&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;match&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; &#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;.*&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; !=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;      print&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; substr&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RSTART+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RLENGTH-&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; else&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;      print $2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; else if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;R&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;RM&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;match&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; &#x2F;-&amp;gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; !=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      path &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; substr&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RSTART+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;      if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;match&lt;&#x2F;span&gt;&lt;span&gt;(path&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; &#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;.*&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; !=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        print&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; substr&lt;&#x2F;span&gt;&lt;span&gt;(path&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RSTART+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RLENGTH-&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; else&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        print&lt;&#x2F;span&gt;&lt;span&gt; path&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Let&#x27;s pretend it&#x27;s beautiful :)&lt;&#x2F;p&gt;
+&lt;p&gt;No, it is not! But it handles all cases that we&#x27;re interested in.&lt;&#x2F;p&gt;
+&lt;p&gt;I&#x27;ll explain the script a little bit. The &lt;code&gt;awk&lt;&#x2F;code&gt; treats each line in the input
+as a record. A record consists of fields. By default, fields are separated
+by a space. To access individual fields you can use variables &lt;code&gt;$1&lt;&#x2F;code&gt;, &lt;code&gt;$2&lt;&#x2F;code&gt; etc.
+The &lt;code&gt;$0&lt;&#x2F;code&gt; has the whole record. Here, in the top level &lt;code&gt;if else&lt;&#x2F;code&gt; block we are
+checking statuses. &lt;code&gt;R&lt;&#x2F;code&gt; and &lt;code&gt;RM&lt;&#x2F;code&gt; should be handled separately because they have
+different format for file paths incorporating &lt;code&gt;-&amp;gt;&lt;&#x2F;code&gt; to show the renaming. We are
+interested in already renamed file, hence &lt;code&gt;match($0, &#x2F;-&amp;gt;&#x2F;)&lt;&#x2F;code&gt; and taking what is
+to the right of &lt;code&gt;-&amp;gt;&lt;&#x2F;code&gt;. This script also handles file names with spaces in them.
+We use the &lt;code&gt;match($0, &#x2F;&quot;.*&quot;&#x2F;)&lt;&#x2F;code&gt; to find double quotes and taking the part that
+is inside them. Now I think you understand the script pretty well. I put it in
+a file and named it &lt;code&gt;git-changed-files.awk&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s modify our formatting script:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; status -uall --porcelain&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; awk&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -f git-changed-files.awk&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; grep&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;\(.*\).swift$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; | while&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; read&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;; do&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    swiftformat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;  --swiftversion&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 5.0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;${&lt;&#x2F;span&gt;&lt;span&gt;line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;done&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Note that I&#x27;ve included &lt;code&gt;-uall&lt;&#x2F;code&gt; argument in &lt;code&gt;git status&lt;&#x2F;code&gt; command to make it
+extra clear we are interested in untracted files too. Otherwise, if you create
+a new directory and a new swift file inside it, it will only show the path to
+the directory, not a file path.&lt;&#x2F;p&gt;
+&lt;p&gt;You can take a look how I use it in my test project
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;zummenix&#x2F;GitHeart&quot;&gt;GitHeart&lt;&#x2F;a&gt; on github.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;In overall, this solution is simple and doesn&#x27;t require any additional tools to
+install. Also the script might be useful to run other tools. I&#x27;m glad that I&#x27;ve
+tried &lt;code&gt;awk&lt;&#x2F;code&gt; and learned a little bit about it. The knowledge will be helpful
+next time I need to process text in nontrivial way.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>You should still be careful using KVO</title>
+        <published>2022-08-15T00:00:00+00:00</published>
+        <updated>2022-08-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://zummenix.github.io/posts/2022/be-careful-using-kvo/"/>
+        <id>https://zummenix.github.io/posts/2022/be-careful-using-kvo/</id>
+        
+        <content type="html" xml:base="https://zummenix.github.io/posts/2022/be-careful-using-kvo/">&lt;p&gt;Key-Value Observing or KVO for short is a good technology. Especially, when you
+don&#x27;t have other ways available to observe changes on some properties of an
+object. For those who have never used KVO and not familiar with it I&#x27;m gently
+asking to read about it in Apple documentation first. I won&#x27;t explain it here.
+I only add a small note: several years ago Apple introduced a new KVO API which
+is definitely safer to use comparing to the old one. In this post we are
+looking only into the new one. Ok, let&#x27;s proceed.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;Recently, I was working on an iOS project where KVO was implemented some time
+ago. Worked fine. Not a single problem. But after some changes, completely
+unrelated, the app started crashing. A stack trace showed a culprit which
+undeniably was the part with KVO.&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s dive in into the code.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;font-weight: bold;&quot;&gt; NSObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    @&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;objc&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    dynamic var&lt;&#x2F;span&gt;&lt;span&gt; isValid &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= false&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;font-weight: bold;&quot;&gt; NSObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    @&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;objc&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private let&lt;&#x2F;span&gt;&lt;span&gt; store: Store&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    init&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;store&lt;&#x2F;span&gt;&lt;span&gt;: Store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span&gt;.store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; store&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    func&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; subscribe&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;onChange&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;@&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;escaping&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; ()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Void&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; AnyObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        let&lt;&#x2F;span&gt;&lt;span&gt; observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; observe&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;\.store.isValid, &lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;options&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; [.new, .old]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) {&lt;&#x2F;span&gt;&lt;span&gt; _, change &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;in&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; change.oldValue &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;!=&lt;&#x2F;span&gt;&lt;span&gt; change.newValue &lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                DispatchQueue.main.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;async&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;                    onChange&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;                }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        return&lt;&#x2F;span&gt;&lt;span&gt; observation&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Let me explain what is going on. We have two classes here. One of them is
+called &lt;code&gt;Store&lt;&#x2F;code&gt; which has some properties that we want to observe. The second is
+called &lt;code&gt;Status&lt;&#x2F;code&gt;, the actual observer, an abstraction that is hidden under
+protocol (not shown here for simplicity). The &lt;code&gt;Store&lt;&#x2F;code&gt; is actually implemented
+in Objective-C, but this part is irrelevant here. The &lt;code&gt;Status&lt;&#x2F;code&gt; has a method
+&lt;code&gt;func subscribe(onChange: @escaping () -&amp;gt; Void) -&amp;gt; AnyObject&lt;&#x2F;code&gt;. The method is
+just a wrapper for the KVO&#x27;s &lt;code&gt;observe&lt;&#x2F;code&gt; method with some minor logic.&lt;&#x2F;p&gt;
+&lt;p&gt;Do you smell anything &quot;funny&quot; here? I don&#x27;t (at least initially). Look, even
+notifications about changes are propagated on the main queue.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;a-crash&quot;&gt;A Crash&lt;&#x2F;h2&gt;
+&lt;p&gt;A crash was happening in some situations when other parts of our codebase were
+changing &lt;code&gt;isValid&lt;&#x2F;code&gt; property of the &lt;code&gt;Store&lt;&#x2F;code&gt; instance. &lt;code&gt;EXC_BAD_ACCESS&lt;&#x2F;code&gt;
+exception. It means it is a memory management error. The stack trace showed an
+internal private function &lt;code&gt;_NSSetBoolValueAndNotify&lt;&#x2F;code&gt; of the objc runtime. I had
+no idea what it was.&lt;&#x2F;p&gt;
+&lt;p&gt;The situation was complicated by several factors. First of all, the crash
+wasn&#x27;t reproducible in debug builds, only in release builds. Second, to crash
+you need to tap-tap-tap and click-click-click through several screens and
+buttons. By following steps our QA gave me, I&#x27;ve spent many many hours trying
+to reproduce the crash. No luck. Until I&#x27;ve decided to enable &quot;Zombie Objects&quot;
+in xcode&#x27;s scheme Diagnostics tab. After all, the crash is clearly related to
+the memory management. Then, followed the QA&#x27;s steps again and boom, the Crash!
+But why though?&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why&quot;&gt;Why?&lt;&#x2F;h2&gt;
+&lt;p&gt;After some more hours looking into debugger, checking out lifetimes of objects,
+I finally got a vague idea what was going on. My assumption was that the
+&lt;code&gt;Status&lt;&#x2F;code&gt; object was deallocated before the observation that we return in the
+&lt;code&gt;Status.subscribe(_:)&lt;&#x2F;code&gt; method. Ok, let&#x27;s write a unit test for this. Luckily,
+we had some unit tests already and adding one more was an easy task.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; KVOTests&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;font-weight: bold;&quot;&gt; XCTestCase&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private let&lt;&#x2F;span&gt;&lt;span&gt; store &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; Store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private var&lt;&#x2F;span&gt;&lt;span&gt; observation:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; AnyObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    func&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; testDeinit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        var&lt;&#x2F;span&gt;&lt;span&gt; sut: Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;? =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; makeSUT&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; sut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;subscribe&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        store.isValid.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;toggle&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        sut &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        let&lt;&#x2F;span&gt;&lt;span&gt; exp &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; expectation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;description&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;wait and update on main&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        DispatchQueue.main.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;asyncAfter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;deadline&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; .&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;now&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span&gt; .&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;microseconds&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;            self&lt;&#x2F;span&gt;&lt;span&gt;.store.isValid.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;toggle&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #616E88;&quot;&gt; &#x2F;&#x2F; Should not crash here.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            exp.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;fulfill&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;        wait&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; [exp], &lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;timeout&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #616E88;&quot;&gt;    &#x2F;&#x2F; MARK: - Helpers&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private func&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; makeSUT&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; Status &lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;        Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you want to repeat it yourself at home, you probably need to enable the
+&quot;Zombie Objects&quot; setting for tests.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Basically, here we are emulating the situation when the &lt;code&gt;Status&lt;&#x2F;code&gt; (&lt;code&gt;sut&lt;&#x2F;code&gt;) object
+is deallocated before the &lt;code&gt;observation&lt;&#x2F;code&gt;. I&#x27;ve pointed out where the crash is
+happening by the comment &lt;code&gt;Should not crash here.&lt;&#x2F;code&gt;. Now we have a failing test.
+Good! Classic TDD. I love it! Let&#x27;s get it green.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;a-fix&quot;&gt;A Fix&lt;&#x2F;h2&gt;
+&lt;p&gt;We need to, somehow, extend the lifetime of the &lt;code&gt;Status&lt;&#x2F;code&gt; object to be at least
+the same as our &lt;code&gt;observation&lt;&#x2F;code&gt;. Of course, we could change how we use it in our
+codebase to make sure that &lt;code&gt;Status&lt;&#x2F;code&gt; instances were alive longer, but there
+weren&#x27;t any guarantees that other developers will not run into a similar
+problem again. I want to avoid it and fix it once and for all. And I was
+feeling a slight guilt because it was me who had implemented this abstraction
+in the first place :)&lt;&#x2F;p&gt;
+&lt;p&gt;One way to extend the lifetime of the &lt;code&gt;Status&lt;&#x2F;code&gt; object is to return it along
+side the &lt;code&gt;observation&lt;&#x2F;code&gt;. Let&#x27;s do that by adding a private class which would
+combine observer and observation together:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;private class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Observation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private var&lt;&#x2F;span&gt;&lt;span&gt; observation: NSKeyValueObservation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private var&lt;&#x2F;span&gt;&lt;span&gt; observer: Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    init&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;observation&lt;&#x2F;span&gt;&lt;span&gt;: NSKeyValueObservation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;observer&lt;&#x2F;span&gt;&lt;span&gt;: Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span&gt;.observation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; observation&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span&gt;.observer&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; observer&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    deinit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #616E88;&quot;&gt;        &#x2F;&#x2F; Order is important.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;invalidate&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observer &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;I think the code is clear and doesn&#x27;t need an explanation. Let&#x27;s create the
+&lt;code&gt;Observation&lt;&#x2F;code&gt; in our &lt;code&gt;Status.subscribe(_:)&lt;&#x2F;code&gt; method and return it. Here is the
+diff:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    func subscribe(onChange: @escaping () -&amp;gt; Void) -&amp;gt; AnyObject {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        let observation = observe(\.store.isValid, options: [.new, .old]) { _, change in&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            if change.oldValue != change.newValue {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                DispatchQueue.main.async {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                    onChange()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BF616A;&quot;&gt;       return observation&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;       return Observation(observation: observation, observer: self)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;Cmd+U&lt;&#x2F;code&gt; and... The test has passed. Nice! Yep, and the app is running fine now.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;Do you remember times where the old KVO observation API was hard to use without
+encountering random crashes? Those times are still here. Maybe, the situation
+is a little bit better, but still... Really, this behaviour isn&#x27;t documented
+anywhere (at least I haven&#x27;t found it). I guess, at Apple nobody foreseen that
+the API will be used this way where the observer is not the object who keeps
+the observation. The fix works for us and I hope I haven&#x27;t introduced other
+bugs here. So, please still be careful using KVO in your projects.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

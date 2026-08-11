@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - objc</title>
+    <link rel="self" type="application/atom+xml" href="https://zummenix.github.io/tags/objc/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://zummenix.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-08-15T00:00:00+00:00</updated>
+    <id>https://zummenix.github.io/tags/objc/atom.xml</id>
+    <entry xml:lang="en">
+        <title>You should still be careful using KVO</title>
+        <published>2022-08-15T00:00:00+00:00</published>
+        <updated>2022-08-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://zummenix.github.io/posts/2022/be-careful-using-kvo/"/>
+        <id>https://zummenix.github.io/posts/2022/be-careful-using-kvo/</id>
+        
+        <content type="html" xml:base="https://zummenix.github.io/posts/2022/be-careful-using-kvo/">&lt;p&gt;Key-Value Observing or KVO for short is a good technology. Especially, when you
+don&#x27;t have other ways available to observe changes on some properties of an
+object. For those who have never used KVO and not familiar with it I&#x27;m gently
+asking to read about it in Apple documentation first. I won&#x27;t explain it here.
+I only add a small note: several years ago Apple introduced a new KVO API which
+is definitely safer to use comparing to the old one. In this post we are
+looking only into the new one. Ok, let&#x27;s proceed.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;Recently, I was working on an iOS project where KVO was implemented some time
+ago. Worked fine. Not a single problem. But after some changes, completely
+unrelated, the app started crashing. A stack trace showed a culprit which
+undeniably was the part with KVO.&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s dive in into the code.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;font-weight: bold;&quot;&gt; NSObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    @&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;objc&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    dynamic var&lt;&#x2F;span&gt;&lt;span&gt; isValid &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= false&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;font-weight: bold;&quot;&gt; NSObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    @&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;objc&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private let&lt;&#x2F;span&gt;&lt;span&gt; store: Store&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    init&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;store&lt;&#x2F;span&gt;&lt;span&gt;: Store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span&gt;.store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; store&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    func&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; subscribe&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;onChange&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;@&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;escaping&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; ()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Void&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; AnyObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        let&lt;&#x2F;span&gt;&lt;span&gt; observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; observe&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;\.store.isValid, &lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;options&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; [.new, .old]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) {&lt;&#x2F;span&gt;&lt;span&gt; _, change &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;in&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; change.oldValue &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;!=&lt;&#x2F;span&gt;&lt;span&gt; change.newValue &lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                DispatchQueue.main.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;async&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;                    onChange&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;                }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        return&lt;&#x2F;span&gt;&lt;span&gt; observation&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Let me explain what is going on. We have two classes here. One of them is
+called &lt;code&gt;Store&lt;&#x2F;code&gt; which has some properties that we want to observe. The second is
+called &lt;code&gt;Status&lt;&#x2F;code&gt;, the actual observer, an abstraction that is hidden under
+protocol (not shown here for simplicity). The &lt;code&gt;Store&lt;&#x2F;code&gt; is actually implemented
+in Objective-C, but this part is irrelevant here. The &lt;code&gt;Status&lt;&#x2F;code&gt; has a method
+&lt;code&gt;func subscribe(onChange: @escaping () -&amp;gt; Void) -&amp;gt; AnyObject&lt;&#x2F;code&gt;. The method is
+just a wrapper for the KVO&#x27;s &lt;code&gt;observe&lt;&#x2F;code&gt; method with some minor logic.&lt;&#x2F;p&gt;
+&lt;p&gt;Do you smell anything &quot;funny&quot; here? I don&#x27;t (at least initially). Look, even
+notifications about changes are propagated on the main queue.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;a-crash&quot;&gt;A Crash&lt;&#x2F;h2&gt;
+&lt;p&gt;A crash was happening in some situations when other parts of our codebase were
+changing &lt;code&gt;isValid&lt;&#x2F;code&gt; property of the &lt;code&gt;Store&lt;&#x2F;code&gt; instance. &lt;code&gt;EXC_BAD_ACCESS&lt;&#x2F;code&gt;
+exception. It means it is a memory management error. The stack trace showed an
+internal private function &lt;code&gt;_NSSetBoolValueAndNotify&lt;&#x2F;code&gt; of the objc runtime. I had
+no idea what it was.&lt;&#x2F;p&gt;
+&lt;p&gt;The situation was complicated by several factors. First of all, the crash
+wasn&#x27;t reproducible in debug builds, only in release builds. Second, to crash
+you need to tap-tap-tap and click-click-click through several screens and
+buttons. By following steps our QA gave me, I&#x27;ve spent many many hours trying
+to reproduce the crash. No luck. Until I&#x27;ve decided to enable &quot;Zombie Objects&quot;
+in xcode&#x27;s scheme Diagnostics tab. After all, the crash is clearly related to
+the memory management. Then, followed the QA&#x27;s steps again and boom, the Crash!
+But why though?&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why&quot;&gt;Why?&lt;&#x2F;h2&gt;
+&lt;p&gt;After some more hours looking into debugger, checking out lifetimes of objects,
+I finally got a vague idea what was going on. My assumption was that the
+&lt;code&gt;Status&lt;&#x2F;code&gt; object was deallocated before the observation that we return in the
+&lt;code&gt;Status.subscribe(_:)&lt;&#x2F;code&gt; method. Ok, let&#x27;s write a unit test for this. Luckily,
+we had some unit tests already and adding one more was an easy task.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; KVOTests&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;font-weight: bold;&quot;&gt; XCTestCase&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private let&lt;&#x2F;span&gt;&lt;span&gt; store &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; Store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private var&lt;&#x2F;span&gt;&lt;span&gt; observation:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; AnyObject&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    func&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; testDeinit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        var&lt;&#x2F;span&gt;&lt;span&gt; sut: Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;? =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; makeSUT&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; sut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;subscribe&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        store.isValid.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;toggle&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        sut &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        let&lt;&#x2F;span&gt;&lt;span&gt; exp &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; expectation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;description&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;wait and update on main&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        DispatchQueue.main.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;asyncAfter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;deadline&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; .&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;now&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span&gt; .&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;microseconds&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;            self&lt;&#x2F;span&gt;&lt;span&gt;.store.isValid.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;toggle&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #616E88;&quot;&gt; &#x2F;&#x2F; Should not crash here.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            exp.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;fulfill&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;        wait&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; [exp], &lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;timeout&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #616E88;&quot;&gt;    &#x2F;&#x2F; MARK: - Helpers&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private func&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; makeSUT&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; Status &lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;        Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; store&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you want to repeat it yourself at home, you probably need to enable the
+&quot;Zombie Objects&quot; setting for tests.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Basically, here we are emulating the situation when the &lt;code&gt;Status&lt;&#x2F;code&gt; (&lt;code&gt;sut&lt;&#x2F;code&gt;) object
+is deallocated before the &lt;code&gt;observation&lt;&#x2F;code&gt;. I&#x27;ve pointed out where the crash is
+happening by the comment &lt;code&gt;Should not crash here.&lt;&#x2F;code&gt;. Now we have a failing test.
+Good! Classic TDD. I love it! Let&#x27;s get it green.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;a-fix&quot;&gt;A Fix&lt;&#x2F;h2&gt;
+&lt;p&gt;We need to, somehow, extend the lifetime of the &lt;code&gt;Status&lt;&#x2F;code&gt; object to be at least
+the same as our &lt;code&gt;observation&lt;&#x2F;code&gt;. Of course, we could change how we use it in our
+codebase to make sure that &lt;code&gt;Status&lt;&#x2F;code&gt; instances were alive longer, but there
+weren&#x27;t any guarantees that other developers will not run into a similar
+problem again. I want to avoid it and fix it once and for all. And I was
+feeling a slight guilt because it was me who had implemented this abstraction
+in the first place :)&lt;&#x2F;p&gt;
+&lt;p&gt;One way to extend the lifetime of the &lt;code&gt;Status&lt;&#x2F;code&gt; object is to return it along
+side the &lt;code&gt;observation&lt;&#x2F;code&gt;. Let&#x27;s do that by adding a private class which would
+combine observer and observation together:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;private class&lt;&#x2F;span&gt;&lt;span style=&quot;color: #8FBCBB;&quot;&gt; Observation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private var&lt;&#x2F;span&gt;&lt;span&gt; observation: NSKeyValueObservation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    private var&lt;&#x2F;span&gt;&lt;span&gt; observer: Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    init&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;observation&lt;&#x2F;span&gt;&lt;span&gt;: NSKeyValueObservation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;observer&lt;&#x2F;span&gt;&lt;span&gt;: Status&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span&gt;.observation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; observation&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span&gt;.observer&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; observer&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    deinit&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #616E88;&quot;&gt;        &#x2F;&#x2F; Order is important.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;invalidate&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observation &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        observer &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;= nil&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;I think the code is clear and doesn&#x27;t need an explanation. Let&#x27;s create the
+&lt;code&gt;Observation&lt;&#x2F;code&gt; in our &lt;code&gt;Status.subscribe(_:)&lt;&#x2F;code&gt; method and return it. Here is the
+diff:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;diff&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    func subscribe(onChange: @escaping () -&amp;gt; Void) -&amp;gt; AnyObject {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        let observation = observe(\.store.isValid, options: [.new, .old]) { _, change in&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            if change.oldValue != change.newValue {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                DispatchQueue.main.async {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                    onChange()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BF616A;&quot;&gt;       return observation&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;       return Observation(observation: observation, observer: self)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;Cmd+U&lt;&#x2F;code&gt; and... The test has passed. Nice! Yep, and the app is running fine now.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;Do you remember times where the old KVO observation API was hard to use without
+encountering random crashes? Those times are still here. Maybe, the situation
+is a little bit better, but still... Really, this behaviour isn&#x27;t documented
+anywhere (at least I haven&#x27;t found it). I guess, at Apple nobody foreseen that
+the API will be used this way where the observer is not the object who keeps
+the observation. The fix works for us and I hope I haven&#x27;t introduced other
+bugs here. So, please still be careful using KVO in your projects.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

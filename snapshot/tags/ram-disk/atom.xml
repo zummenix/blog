@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - ram-disk</title>
+    <link rel="self" type="application/atom+xml" href="https://zummenix.github.io/tags/ram-disk/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://zummenix.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-11-05T00:00:00+00:00</updated>
+    <id>https://zummenix.github.io/tags/ram-disk/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Is it worth it to have DerivedData on a RAM disk?</title>
+        <published>2023-11-05T00:00:00+00:00</published>
+        <updated>2023-11-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://zummenix.github.io/posts/2023/derived-data-ram-disk/"/>
+        <id>https://zummenix.github.io/posts/2023/derived-data-ram-disk/</id>
+        
+        <content type="html" xml:base="https://zummenix.github.io/posts/2023/derived-data-ram-disk/">&lt;p&gt;As you probably know, Xcode stores intermediate build files and indexes in
+&lt;code&gt;DerivedData&lt;&#x2F;code&gt; directory, &lt;code&gt;~&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;DerivedData&lt;&#x2F;code&gt; to be precise.
+It helps improve build performance by caching previously built artifacts
+and allowing for incremental builds. One of the ways to improve Xcode build
+times is to create a virtual disk in memory (RAM disk) and mount it in place
+of &lt;code&gt;DerivedData&lt;&#x2F;code&gt; directory. With modern Apple devices this becomes somewhat
+possible and I&#x27;ve decided to try it out.&lt;&#x2F;p&gt;
+&lt;p&gt;I have M1 Max MacBook Pro with 64 GB of memory. Usually, I don&#x27;t consume all of
+the memory during development, so I can put aside some for a RAM disk.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;creating-a-ram-disk&quot;&gt;Creating a RAM disk&lt;&#x2F;h2&gt;
+&lt;p&gt;I will use terminal and available tools to create a RAM disk with a file system
+and mount it.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Creating a disk&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;hdiutil&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; attach -nomount ram:&#x2F;&#x2F;33554432&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The magic number is &lt;code&gt;blockcount&lt;&#x2F;code&gt;, one block is 512 bytes, so 33554432 is around
+17 GB.&lt;&#x2F;p&gt;
+&lt;p&gt;This will return something like &lt;code&gt;&#x2F;dev&#x2F;disk4&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note, that the disk index can be different for you, so adjust the following
+commands accordingly.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;You can verify the disk has been created by running &lt;code&gt;hdiutil info&lt;&#x2F;code&gt;. Also, at any
+point you can get rid of the disk by running &lt;code&gt;hdiutil eject &#x2F;dev&#x2F;disk4&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;The disk doesn&#x27;t have a file system, we need to create one. I will create
+APFS but you can explore others&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;newfs_apfs&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -v DerivedData &#x2F;dev&#x2F;disk4&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;DerivedData&lt;&#x2F;code&gt; here is the name of the volume. It could be anything and will be
+visible in Finder as an external disk.&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s check the result by running &lt;code&gt;diskutil list&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&amp;lt;omitted&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&#x2F;dev&#x2F;disk4 (disk image):&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   #:                       TYPE NAME                    SIZE       IDENTIFIER&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   0:                                                   +17.2 GB    disk4&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&#x2F;dev&#x2F;disk5 (synthesized):&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   #:                       TYPE NAME                    SIZE       IDENTIFIER&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   0:      APFS Container Scheme -                      +17.2 GB    disk5&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                                 Physical Store disk4&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   1:                APFS Volume DerivedData             20.5 KB    disk5s1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;You should see created &lt;code&gt;DerivedData&lt;&#x2F;code&gt; volume with &lt;code&gt;disk5s1&lt;&#x2F;code&gt; identifier. We need
+that for the last step.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;Mounting to &lt;code&gt;DerivedData&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;mount_apfs&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; &#x2F;dev&#x2F;disk5s1 Library&#x2F;Developer&#x2F;Xcode&#x2F;DerivedData&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;That&#x27;s all. The RAM disk is successfully created and mounted.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;measuring-xcode-build-performance&quot;&gt;Measuring Xcode build performance&lt;&#x2F;h2&gt;
+&lt;p&gt;As a benchmark I took our current work project, decent size, takes around 5
+minutes to build.&lt;&#x2F;p&gt;
+&lt;p&gt;The following results are after second clean build for both. Please take these
+timings with a grain of salt. I don&#x27;t trust these numbers myself :). On several
+runs I&#x27;ve even noticed there are no improvements in time.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;deriveddata-is-on-ssd-disk&quot;&gt;DerivedData is on SSD disk&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;em&gt;4min 47s&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;zummenix.github.io&#x2F;posts&#x2F;2023&#x2F;derived-data-ram-disk&#x2F;.&#x2F;disk-derived-data.png&quot; alt=&quot;When DerivedData is on SSD disk&quot; title=&quot;When DerivedData is on SSD disk&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;deriveddata-is-on-ram-disk&quot;&gt;DerivedData is on RAM disk&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;em&gt;3min 59s&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;zummenix.github.io&#x2F;posts&#x2F;2023&#x2F;derived-data-ram-disk&#x2F;.&#x2F;ram-derived-data.png&quot; alt=&quot;When DerivedData is on RAM disk&quot; title=&quot;When DerivedData is on RAM disk&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;in-conclusion&quot;&gt;In conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;Though, numbers show that the RAM disk is faster, in reality I&#x27;d argue that
+it hardly matters for local builds. I&#x27;d like to measure performance for
+incremental builds but it&#x27;s hard to do correctly and there will be a lot more
+variables involved. Modern SSDs are fast enough that it&#x27;s very hard to justify
+inconveniences of creating and managing a RAM disk. For bigger projects it&#x27;s
+even impossible to create big RAM disks without going into 128 GB territory.&lt;&#x2F;p&gt;
+&lt;p&gt;As for myself, I&#x27;ve decided to run this setup for a week or two to see if it
+feels faster.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;iOSProgramming&#x2F;comments&#x2F;17og1nm&#x2F;is_it_worth_it_to_have_deriveddata_on_a_ram_disk&#x2F;&quot;&gt;Discuss on Reddit&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

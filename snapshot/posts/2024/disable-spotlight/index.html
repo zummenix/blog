@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#22272e" />
+
+    <meta
+      name="description"
+      content="mds_store uses a lot of cpu indexing files for Spotlight (most likely just stuck)"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://zummenix.github.io/style.css?h=3da2cb78da548f69215b"
+    />
+
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="Atom"
+      href="https:&#x2F;&#x2F;zummenix.github.io&#x2F;atom.xml"
+    />
+
+    <!-- simply generated using https://favicon.io/favicon-generator/ -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <title>zummenix</title>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <a href="/posts">All Posts</a>
+        <a href="/links">Links</a>
+        <a href="/">Home</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Disable Spotlight and life without it</h1>
+      <p>
+        <span class="tags-list">
+          <svg
+            class="svg-icon"
+            viewBox="0 0 256 256"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="currentColor"
+            fill="none"
+          >
+            <path
+              d="M122.7,25.9,42,42,25.9,122.7a8,8,0,0,0,2.2,7.2L132.5,234.3a7.9,7.9,0,0,0,11.3,0l90.5-90.5a7.9,7.9,0,0,0,0-11.3L129.9,28.1A8,8,0,0,0,122.7,25.9Z"
+              stroke-width="4%"
+            />
+            <circle cx="84" cy="84" r="12" fill="currentColor" />
+          </svg>
+          &thinsp;<a href="/tags/macos">macos</a>
+          ·
+          <a href="/tags/bash">bash</a>
+          ·
+          <a href="/tags/shorts">shorts</a>
+        </span>
+
+        <br />
+
+        <span class="date">
+          <svg
+            class="svg-icon"
+            viewBox="0 0 256 256"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g stroke="currentColor" fill="none" stroke-width="4%">
+              <rect x="18" y="40" width="220" height="190" />
+              <line x1="72" y1="18" x2="72" y2="70" />
+              <line x1="184" y1="18" x2="184" y2="70" />
+            </g>
+            <g fill="currentColor" stroke="none">
+              <circle cx="72" cy="110" r="12" />
+              <circle cx="128" cy="110" r="12" />
+              <circle cx="183" cy="110" r="12" />
+              <circle cx="72" cy="170" r="12" />
+              <circle cx="128" cy="170" r="12" />
+            </g>
+          </svg>
+          &thinsp;December 2, 2024</span
+        >
+      </p>
+      <p>
+        I've recently noticed that the <code>mds_stores</code> process on my Mac
+        is consuming a significant amount of CPU power. Again.
+      </p>
+      <p>
+        <code>mds_stores</code> is a background process that indexes files for
+        faster searching in Spotlight. Seasoned macOS users very likely know
+        about it and know that wise decision would be to disable some of search
+        areas by changing Spotlight settings. This is me too. I have only
+        Applications, Calculator and System Settings items enabled and still
+        <code>mds_stores</code> is the first in the list of cpu consumers in
+        Activity Monitor. I'm not sure if it happened after updating macOS or
+        earlier for some other reason.
+      </p>
+      <p>Something needs to be done. This is last straw :)</p>
+      <p>I'm disabling Spotlight completely:</p>
+      <pre
+        class="giallo"
+        style="color: #d8dee9; background-color: #2e3440"
+      ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #88C0D0;">sudo</span><span style="color: #A3BE8C;"> mdutil -ai off</span></span></code></pre>
+      <p>It spat out the following:</p>
+      <pre
+        class="giallo"
+        style="color: #d8dee9; background-color: #2e3440"
+      ><code data-lang="plain"><span class="giallo-l"><span>/:</span></span>
+<span class="giallo-l"><span>2024-11-22 00:21:40.119 mdutil[25437:982881] mdutil disabling Spotlight: / -&gt; kMDConfigSearchLevelFSSearchOnly</span></span>
+<span class="giallo-l"><span>        Indexing disabled.</span></span>
+<span class="giallo-l"><span>/System/Volumes/Data:</span></span>
+<span class="giallo-l"><span>2024-11-22 00:21:40.144 mdutil[25437:982881] mdutil disabling Spotlight: /System/Volumes/Data -&gt; kMDConfigSearchLevelFSSearchOnly</span></span>
+<span class="giallo-l"><span>Error: unable to perform operation.  (-1)</span></span>
+<span class="giallo-l"><span>        Error: unknown indexing state.</span></span>
+<span class="giallo-l"><span>/System/Volumes/Preboot:</span></span>
+<span class="giallo-l"><span>Error: invalid operation.</span></span>
+<span class="giallo-l"><span>        Error: unknown indexing state.</span></span></code></pre>
+      <p>
+        Maybe these errors are somehow related to the problem. After running the
+        command second time it reported that indexing is disabled without any
+        errors.
+      </p>
+      <p>
+        It's sad to loose Spotlight functionality. Brief research revealed
+        existence of similar apps such as
+        <a
+          rel="noopener external"
+          target="_blank"
+          href="https://www.alfredapp.com"
+          >Alfred</a
+        >
+        or
+        <a
+          rel="noopener external"
+          target="_blank"
+          href="https://www.raycast.com"
+          >Raycast</a
+        >. I haven't tried them because I probably can't use most of their
+        features. Eventually I figured that I can write simple alternatives for
+        my needs myself. That I did.
+      </p>
+      <p>
+        The main feature of Spotlight that I miss the most is fast opening any
+        app by typing in Spotlight search field. The solution would be to search
+        the <code>*.app</code>
+        in special directories. Filter/search could be done using
+        <a
+          rel="noopener external"
+          target="_blank"
+          href="https://junegunn.github.io/fzf/"
+          ><code>fzf</code></a
+        >
+        (or similar tools). And opening an app will be done using native Apple
+        script. Here is the first working script in bash:
+      </p>
+      <pre
+        class="giallo"
+        style="color: #d8dee9; background-color: #2e3440"
+      ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #616E88;">#!/usr/bin/env bash</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #81A1C1;">function</span><span style="color: #88C0D0;"> list_apps</span><span style="color: #ECEFF4;"> {</span></span>
+<span class="giallo-l"><span style="color: #88C0D0;">    find</span><span style="color: #ECEFF4;"> &quot;</span><span>$1</span><span style="color: #ECEFF4;">&quot;</span><span style="color: #A3BE8C;"> -type d -maxdepth</span><span style="color: #B48EAD;"> 1</span><span style="color: #A3BE8C;"> -name</span><span style="color: #ECEFF4;"> &#39;</span><span style="color: #A3BE8C;">*.app</span><span style="color: #ECEFF4;">&#39;</span><span style="color: #81A1C1;"> |</span><span style="color: #88C0D0;"> sed</span><span style="color: #ECEFF4;"> &#39;</span><span style="color: #A3BE8C;">s#.*/##</span><span style="color: #ECEFF4;">&#39;</span><span style="color: #81A1C1;"> |</span><span style="color: #88C0D0;"> sed</span><span style="color: #ECEFF4;"> &#39;</span><span style="color: #A3BE8C;">s/.app$//</span><span style="color: #ECEFF4;">&#39;</span></span>
+<span class="giallo-l"><span style="color: #ECEFF4;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #88C0D0;">paste</span><span style="color: #A3BE8C;"> -d</span><span style="color: #ECEFF4;">&#39;</span><span style="color: #A3BE8C;">\n</span><span style="color: #ECEFF4;">&#39; &lt;(</span><span style="color: #88C0D0;">list_apps</span><span style="color: #A3BE8C;"> /Applications</span><span style="color: #ECEFF4;">) &lt;(</span><span style="color: #88C0D0;">list_apps</span><span style="color: #A3BE8C;"> /System/Applications</span><span style="color: #ECEFF4;">) &lt;(</span><span style="color: #88C0D0;">list_apps</span><span style="color: #A3BE8C;"> /System/Applications/Utilities</span><span style="color: #ECEFF4;">)</span><span style="color: #81A1C1;"> |</span><span style="color: #EBCB8B;"> \</span></span>
+<span class="giallo-l"><span style="color: #88C0D0;">    xargs</span><span style="color: #A3BE8C;"> -I</span><span>{} echo &quot;{}&quot; | \</span></span>
+<span class="giallo-l"><span style="color: #88C0D0;">    sort</span><span style="color: #A3BE8C;"> -if</span><span style="color: #81A1C1;"> |</span><span style="color: #EBCB8B;"> \</span></span>
+<span class="giallo-l"><span style="color: #88C0D0;">    fzf</span><span style="color: #A3BE8C;"> --header</span><span style="color: #ECEFF4;"> &quot;</span><span style="color: #A3BE8C;">Select app to open</span><span style="color: #ECEFF4;">&quot;</span><span style="color: #81A1C1;"> |</span><span style="color: #EBCB8B;"> \</span></span>
+<span class="giallo-l"><span style="color: #88C0D0;">    xargs</span><span style="color: #A3BE8C;"> -I</span><span>{} osascript -e &quot;tell application \&quot;{}\&quot; to activate&quot;</span></span></code></pre>
+      <p>Here is how it looks:</p>
+      <div>
+        <script
+          src="https://asciinema.org/a/693053.js"
+          id="asciicast-693053"
+          async="true"
+        ></script>
+      </div>
+      <p>
+        I'll probably update this script in the future if I find any bugs or
+        find myself missing some features. You can always check my dotfiles for
+        that
+        <a
+          rel="noopener external"
+          target="_blank"
+          href="https://github.com/zummenix/dotfiles/tree/master/scripts"
+          >here</a
+        >.
+      </p>
+      <p>
+        For now I'm happy with this simple solution, knowing that
+        <code>mds_stores</code> won't use any cpu to no purpose.
+      </p>
+    </main>
+    <footer>
+      <p>&copy; 2026 Aleksey Kuznetsov. All rights reserved.</p>
+      <p>
+        Content and media are licensed under the
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/"
+          >CC BY-SA 4.0</a
+        >. Code samples are under the
+        <a href="/licenses/unlicense.txt">Unlicense</a>.
+      </p>
+    </footer>
+  </body>
+</html>

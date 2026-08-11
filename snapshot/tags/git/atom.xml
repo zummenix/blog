@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - git</title>
+    <link rel="self" type="application/atom+xml" href="https://zummenix.github.io/tags/git/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://zummenix.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-01-07T00:00:00+00:00</updated>
+    <id>https://zummenix.github.io/tags/git/atom.xml</id>
+    <entry xml:lang="en">
+        <title>SwiftFormat only changed files</title>
+        <published>2023-01-07T00:00:00+00:00</published>
+        <updated>2023-01-07T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://zummenix.github.io/posts/2023/swiftformat-changed-files/"/>
+        <id>https://zummenix.github.io/posts/2023/swiftformat-changed-files/</id>
+        
+        <content type="html" xml:base="https://zummenix.github.io/posts/2023/swiftformat-changed-files/">&lt;p&gt;There are a couple of reasons to run formatting or linting tools only on files
+that have been changed. In a big legacy project you probably don&#x27;t want to
+format all files right away. Also you don&#x27;t want spending extra seconds running
+these kinds of tools.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I want to note that &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nicklockwood&#x2F;SwiftFormat&quot;&gt;nicklockwood&#x2F;SwiftFormat&lt;&#x2F;a&gt;
+uses caching by default, so the second point might be irrelevant.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;One solution is to use git to identify files that have been changed and run
+swiftformat on those. When I decided to implement this strategy I found a
+snippet of a bash script that does what I need. At least, I thought.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; diff --diff-filter=d --name-only&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; grep&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;\(.*\).swift$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; | while&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; read&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;; do&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    swiftformat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;  --swiftversion&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 5.0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;${&lt;&#x2F;span&gt;&lt;span&gt;line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;done&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Let&#x27;s see what is going on here. It uses &lt;code&gt;git diff&lt;&#x2F;code&gt; subcommand with argument
+&lt;code&gt;--diff-filter=d&lt;&#x2F;code&gt; and &lt;code&gt;--name-only&lt;&#x2F;code&gt; flag. &lt;code&gt;--diff-filter=d&lt;&#x2F;code&gt;, according to
+documentation, excludes paths for files that have been deleted, &lt;code&gt;--name-only&lt;&#x2F;code&gt;
+shows only file paths. The output of &lt;code&gt;git diff&lt;&#x2F;code&gt; is piped to &lt;code&gt;grep&lt;&#x2F;code&gt; with a regex
+to filter only &lt;code&gt;swift&lt;&#x2F;code&gt; files and then the result is piped to the &lt;code&gt;while&lt;&#x2F;code&gt; loop
+in which we run swiftformat for each file path.&lt;&#x2F;p&gt;
+&lt;p&gt;This looks logical. You put this snippet in a file, make it executable and
+add it in a build phase in your Xcode project. It works in almost all cases.
+After working with this setup for a while I&#x27;ve noticed, for example, that this
+doesn&#x27;t handle newly created files. It is a bummer and completely unexpected.&lt;&#x2F;p&gt;
+&lt;p&gt;I didn&#x27;t find any other solution, so I decided to look at &lt;code&gt;git status&lt;&#x2F;code&gt;. Seems
+like it knows and shows newly created, changed and renamed files. That is what
+we need. &lt;code&gt;git status&lt;&#x2F;code&gt; also has &lt;code&gt;--porcelain&lt;&#x2F;code&gt; flag which adds guaranties that
+format of the output doesn&#x27;t change between git versions. Let&#x27;s explore this
+solution further. If you run &lt;code&gt;git status --porcelain&lt;&#x2F;code&gt;, you&#x27;ll see the output
+that looks something like this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A  file.swift&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;?? another-file.swift&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Basically, it&#x27;s a table with a status and a file path for each file. Our task
+is to filter the output of &lt;code&gt;git status --porcelain&lt;&#x2F;code&gt; by statuses and return
+file paths. This should be pretty easy to do in any programming language. I was
+thinking about using swift for this but decided to go against it. I don&#x27;t want
+to impose a compilation step on the team. Another reason was that I wanted to
+try &lt;code&gt;awk&lt;&#x2F;code&gt; :). For those who don&#x27;t know, &lt;code&gt;awk&lt;&#x2F;code&gt; is a text processing language and
+a tool. It is installed by default on every unix and linux. Since macos is a
+descendant of unix, we have it too. Nice!&lt;&#x2F;p&gt;
+&lt;p&gt;Next step is to read the documentation about different statuses. &lt;code&gt;git status --help&lt;&#x2F;code&gt;.  Ok, I think I understand the gist. Let&#x27;s try it in practice and see
+what we are dealing with. The statuses that we are interested in are:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;M&lt;&#x2F;code&gt;- modified&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;A&lt;&#x2F;code&gt;- added&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;AM&lt;&#x2F;code&gt;- added and modified&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;??&lt;&#x2F;code&gt; - newly created untracted files&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;R&lt;&#x2F;code&gt; - renamed&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;RM&lt;&#x2F;code&gt; - renamed and modified&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Seems like the above list is complete for our use case.&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s time to try &lt;code&gt;awk&lt;&#x2F;code&gt; for real. You probably saw usage of &lt;code&gt;awk&lt;&#x2F;code&gt; in some
+scripts and maybe it looked like one-liner in a bash command. But here we have
+a lot to handle. So I decided to put all logic in a separate file and pass it
+to &lt;code&gt;awk&lt;&#x2F;code&gt; using &lt;code&gt;-f&lt;&#x2F;code&gt; argument. Now I&#x27;ll show you the script that evolved during
+my late evening working on this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;awk&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;  if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;M&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;A&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;AM&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;??&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;match&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; &#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;.*&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; !=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;      print&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; substr&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RSTART+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RLENGTH-&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; else&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;      print $2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; else if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;R&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; || $1 ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;RM&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;    if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;match&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; &#x2F;-&amp;gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; !=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      path &lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; substr&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;$0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RSTART+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;      if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;match&lt;&#x2F;span&gt;&lt;span&gt;(path&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; &#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;.*&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; !=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        print&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; substr&lt;&#x2F;span&gt;&lt;span&gt;(path&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RSTART+&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; RLENGTH-&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; else&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;        print&lt;&#x2F;span&gt;&lt;span&gt; path&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Let&#x27;s pretend it&#x27;s beautiful :)&lt;&#x2F;p&gt;
+&lt;p&gt;No, it is not! But it handles all cases that we&#x27;re interested in.&lt;&#x2F;p&gt;
+&lt;p&gt;I&#x27;ll explain the script a little bit. The &lt;code&gt;awk&lt;&#x2F;code&gt; treats each line in the input
+as a record. A record consists of fields. By default, fields are separated
+by a space. To access individual fields you can use variables &lt;code&gt;$1&lt;&#x2F;code&gt;, &lt;code&gt;$2&lt;&#x2F;code&gt; etc.
+The &lt;code&gt;$0&lt;&#x2F;code&gt; has the whole record. Here, in the top level &lt;code&gt;if else&lt;&#x2F;code&gt; block we are
+checking statuses. &lt;code&gt;R&lt;&#x2F;code&gt; and &lt;code&gt;RM&lt;&#x2F;code&gt; should be handled separately because they have
+different format for file paths incorporating &lt;code&gt;-&amp;gt;&lt;&#x2F;code&gt; to show the renaming. We are
+interested in already renamed file, hence &lt;code&gt;match($0, &#x2F;-&amp;gt;&#x2F;)&lt;&#x2F;code&gt; and taking what is
+to the right of &lt;code&gt;-&amp;gt;&lt;&#x2F;code&gt;. This script also handles file names with spaces in them.
+We use the &lt;code&gt;match($0, &#x2F;&quot;.*&quot;&#x2F;)&lt;&#x2F;code&gt; to find double quotes and taking the part that
+is inside them. Now I think you understand the script pretty well. I put it in
+a file and named it &lt;code&gt;git-changed-files.awk&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Let&#x27;s modify our formatting script:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #D8DEE9; background-color: #2E3440;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; status -uall --porcelain&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; awk&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -f git-changed-files.awk&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; grep&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; -e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;\(.*\).swift$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt; | while&lt;&#x2F;span&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt; read&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt; line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;; do&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #88C0D0;&quot;&gt;    swiftformat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #A3BE8C;&quot;&gt;  --swiftversion&lt;&#x2F;span&gt;&lt;span style=&quot;color: #B48EAD;&quot;&gt; 5.0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;${&lt;&#x2F;span&gt;&lt;span&gt;line&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color: #ECEFF4;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #81A1C1;&quot;&gt;done&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Note that I&#x27;ve included &lt;code&gt;-uall&lt;&#x2F;code&gt; argument in &lt;code&gt;git status&lt;&#x2F;code&gt; command to make it
+extra clear we are interested in untracted files too. Otherwise, if you create
+a new directory and a new swift file inside it, it will only show the path to
+the directory, not a file path.&lt;&#x2F;p&gt;
+&lt;p&gt;You can take a look how I use it in my test project
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;zummenix&#x2F;GitHeart&quot;&gt;GitHeart&lt;&#x2F;a&gt; on github.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;In overall, this solution is simple and doesn&#x27;t require any additional tools to
+install. Also the script might be useful to run other tools. I&#x27;m glad that I&#x27;ve
+tried &lt;code&gt;awk&lt;&#x2F;code&gt; and learned a little bit about it. The knowledge will be helpful
+next time I need to process text in nontrivial way.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

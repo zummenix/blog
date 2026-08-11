@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#22272e" />
+
+    <meta
+      name="description"
+      content="Explore Xcode build performance improvements with DerivedData on a RAM disk"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://zummenix.github.io/style.css?h=3da2cb78da548f69215b"
+    />
+
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="Atom"
+      href="https:&#x2F;&#x2F;zummenix.github.io&#x2F;atom.xml"
+    />
+
+    <!-- simply generated using https://favicon.io/favicon-generator/ -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <title>zummenix</title>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <a href="/posts">All Posts</a>
+        <a href="/links">Links</a>
+        <a href="/">Home</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Is it worth it to have DerivedData on a RAM disk?</h1>
+      <p>
+        <span class="tags-list">
+          <svg
+            class="svg-icon"
+            viewBox="0 0 256 256"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="currentColor"
+            fill="none"
+          >
+            <path
+              d="M122.7,25.9,42,42,25.9,122.7a8,8,0,0,0,2.2,7.2L132.5,234.3a7.9,7.9,0,0,0,11.3,0l90.5-90.5a7.9,7.9,0,0,0,0-11.3L129.9,28.1A8,8,0,0,0,122.7,25.9Z"
+              stroke-width="4%"
+            />
+            <circle cx="84" cy="84" r="12" fill="currentColor" />
+          </svg>
+          &thinsp;<a href="/tags/xcode">xcode</a>
+          ·
+          <a href="/tags/performance">performance</a>
+          ·
+          <a href="/tags/ram-disk">ram-disk</a>
+        </span>
+
+        <br />
+
+        <span class="date">
+          <svg
+            class="svg-icon"
+            viewBox="0 0 256 256"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g stroke="currentColor" fill="none" stroke-width="4%">
+              <rect x="18" y="40" width="220" height="190" />
+              <line x1="72" y1="18" x2="72" y2="70" />
+              <line x1="184" y1="18" x2="184" y2="70" />
+            </g>
+            <g fill="currentColor" stroke="none">
+              <circle cx="72" cy="110" r="12" />
+              <circle cx="128" cy="110" r="12" />
+              <circle cx="183" cy="110" r="12" />
+              <circle cx="72" cy="170" r="12" />
+              <circle cx="128" cy="170" r="12" />
+            </g>
+          </svg>
+          &thinsp;November 5, 2023</span
+        >
+      </p>
+      <p>
+        As you probably know, Xcode stores intermediate build files and indexes
+        in <code>DerivedData</code> directory,
+        <code>~/Library/Developer/Xcode/DerivedData</code> to be precise. It
+        helps improve build performance by caching previously built artifacts
+        and allowing for incremental builds. One of the ways to improve Xcode
+        build times is to create a virtual disk in memory (RAM disk) and mount
+        it in place of <code>DerivedData</code> directory. With modern Apple
+        devices this becomes somewhat possible and I've decided to try it out.
+      </p>
+      <p>
+        I have M1 Max MacBook Pro with 64 GB of memory. Usually, I don't consume
+        all of the memory during development, so I can put aside some for a RAM
+        disk.
+      </p>
+      <h2 id="creating-a-ram-disk">Creating a RAM disk</h2>
+      <p>
+        I will use terminal and available tools to create a RAM disk with a file
+        system and mount it.
+      </p>
+      <ol>
+        <li>Creating a disk</li>
+      </ol>
+      <pre
+        class="giallo"
+        style="color: #d8dee9; background-color: #2e3440"
+      ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #88C0D0;">hdiutil</span><span style="color: #A3BE8C;"> attach -nomount ram://33554432</span></span></code></pre>
+      <p>
+        The magic number is <code>blockcount</code>, one block is 512 bytes, so
+        33554432 is around 17 GB.
+      </p>
+      <p>This will return something like <code>/dev/disk4</code>.</p>
+      <blockquote>
+        <p>
+          Note, that the disk index can be different for you, so adjust the
+          following commands accordingly.
+        </p>
+      </blockquote>
+      <p>
+        You can verify the disk has been created by running
+        <code>hdiutil info</code>. Also, at any point you can get rid of the
+        disk by running <code>hdiutil eject /dev/disk4</code>
+      </p>
+      <ol start="2">
+        <li>
+          The disk doesn't have a file system, we need to create one. I will
+          create APFS but you can explore others
+        </li>
+      </ol>
+      <pre
+        class="giallo"
+        style="color: #d8dee9; background-color: #2e3440"
+      ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #88C0D0;">newfs_apfs</span><span style="color: #A3BE8C;"> -v DerivedData /dev/disk4</span></span></code></pre>
+      <p>
+        <code>DerivedData</code> here is the name of the volume. It could be
+        anything and will be visible in Finder as an external disk.
+      </p>
+      <p>Let's check the result by running <code>diskutil list</code>:</p>
+      <pre
+        class="giallo"
+        style="color: #d8dee9; background-color: #2e3440"
+      ><code data-lang="plain"><span class="giallo-l"><span>&lt;omitted&gt;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>...</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>/dev/disk4 (disk image):</span></span>
+<span class="giallo-l"><span>   #:                       TYPE NAME                    SIZE       IDENTIFIER</span></span>
+<span class="giallo-l"><span>   0:                                                   +17.2 GB    disk4</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>/dev/disk5 (synthesized):</span></span>
+<span class="giallo-l"><span>   #:                       TYPE NAME                    SIZE       IDENTIFIER</span></span>
+<span class="giallo-l"><span>   0:      APFS Container Scheme -                      +17.2 GB    disk5</span></span>
+<span class="giallo-l"><span>                                 Physical Store disk4</span></span>
+<span class="giallo-l"><span>   1:                APFS Volume DerivedData             20.5 KB    disk5s1</span></span></code></pre>
+      <p>
+        You should see created <code>DerivedData</code> volume with
+        <code>disk5s1</code> identifier. We need that for the last step.
+      </p>
+      <ol start="3">
+        <li>Mounting to <code>DerivedData</code></li>
+      </ol>
+      <pre
+        class="giallo"
+        style="color: #d8dee9; background-color: #2e3440"
+      ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #88C0D0;">mount_apfs</span><span style="color: #A3BE8C;"> /dev/disk5s1 Library/Developer/Xcode/DerivedData</span></span></code></pre>
+      <p>That's all. The RAM disk is successfully created and mounted.</p>
+      <h2 id="measuring-xcode-build-performance">
+        Measuring Xcode build performance
+      </h2>
+      <p>
+        As a benchmark I took our current work project, decent size, takes
+        around 5 minutes to build.
+      </p>
+      <p>
+        The following results are after second clean build for both. Please take
+        these timings with a grain of salt. I don't trust these numbers myself
+        :). On several runs I've even noticed there are no improvements in time.
+      </p>
+      <h3 id="deriveddata-is-on-ssd-disk">DerivedData is on SSD disk</h3>
+      <p><em>4min 47s</em></p>
+      <p>
+        <img
+          src="https://zummenix.github.io/posts/2023/derived-data-ram-disk/./disk-derived-data.png"
+          alt="When DerivedData is on SSD disk"
+          title="When DerivedData is on SSD disk"
+        />
+      </p>
+      <h3 id="deriveddata-is-on-ram-disk">DerivedData is on RAM disk</h3>
+      <p><em>3min 59s</em></p>
+      <p>
+        <img
+          src="https://zummenix.github.io/posts/2023/derived-data-ram-disk/./ram-derived-data.png"
+          alt="When DerivedData is on RAM disk"
+          title="When DerivedData is on RAM disk"
+        />
+      </p>
+      <h2 id="in-conclusion">In conclusion</h2>
+      <p>
+        Though, numbers show that the RAM disk is faster, in reality I'd argue
+        that it hardly matters for local builds. I'd like to measure performance
+        for incremental builds but it's hard to do correctly and there will be a
+        lot more variables involved. Modern SSDs are fast enough that it's very
+        hard to justify inconveniences of creating and managing a RAM disk. For
+        bigger projects it's even impossible to create big RAM disks without
+        going into 128 GB territory.
+      </p>
+      <p>
+        As for myself, I've decided to run this setup for a week or two to see
+        if it feels faster.
+      </p>
+      <p>
+        <a
+          rel="noopener external"
+          target="_blank"
+          href="https://www.reddit.com/r/iOSProgramming/comments/17og1nm/is_it_worth_it_to_have_deriveddata_on_a_ram_disk/"
+          >Discuss on Reddit</a
+        >
+      </p>
+    </main>
+    <footer>
+      <p>&copy; 2026 Aleksey Kuznetsov. All rights reserved.</p>
+      <p>
+        Content and media are licensed under the
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/"
+          >CC BY-SA 4.0</a
+        >. Code samples are under the
+        <a href="/licenses/unlicense.txt">Unlicense</a>.
+      </p>
+    </footer>
+  </body>
+</html>
