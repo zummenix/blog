@@ -23,13 +23,11 @@
 {% set section = get_section(path="posts/_index.md") %}
 {% set years_sections = [get_section(path=year_section_path) for year_section_path in section.subsections] %}
 {% set years_sections = years_sections | sort(attribute="title") | reverse %}
-{% set pages = years_sections[0].pages[:3] %}
-{% if years_sections | length > 1 and pages | length < 3 %}
-  {% set pages = [...pages, ...years_sections[1].pages[:3 - (pages | length)]] %}
-{% endif %}
-{% if years_sections | length > 2 and pages | length < 3 %}
-  {% set pages = [...pages, ...years_sections[2].pages[:3 - (pages | length)]] %}
-{% endif %}
+{% set pages = [] %}
+{% for year_section in years_sections %}
+  {% set_global pages = pages | concat(with=year_section.pages) %}
+{% endfor %}
+{% set pages = pages | slice(end=3) %}
 {{<blog.post_list pages={pages} />}}
 <p class="link-button"><a href="/posts">All Posts →</a></p>
 {% endblock %}
