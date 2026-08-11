@@ -25,9 +25,8 @@
 {% set years_sections = years_sections | sort(attribute="title") | reverse %}
 {% set pages = [] %}
 {% for year_section in years_sections %}
-  {% set_global pages = pages | concat(with=year_section.pages) %}
+{% set_global pages = [...pages, ...year_section.pages] %}
 {% endfor %}
-{% set pages = pages | slice(end=3) %}
-{{<blog.post_list pages={pages} />}}
+{{<blog.post_list pages={pages[:3]} />}}
 <p class="link-button"><a href="/posts">All Posts →</a></p>
 {% endblock %}
